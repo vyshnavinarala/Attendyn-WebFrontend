@@ -559,6 +559,10 @@
                 alert('Connection error. Please try again.');
             }
         }
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAuth();
+            renderManageSubjects();
+        });
     </script>
 </body>
 </html>

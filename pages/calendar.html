@@ -541,7 +541,10 @@
             window.location.href = page;
         }
 
-        init();
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAuth();
+            init();
+        });
     </script>
 </body>
 </html>

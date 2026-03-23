@@ -616,9 +616,12 @@
         let userGoal = 75;
         let selectedSubject = null;
 
-        document.addEventListener('DOMContentLoaded', init);
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAuth();
+            fetchSubjects();
+        });
 
-        function init() {
+        function fetchSubjects() {
             // Load goal
             const savedGoal = localStorage.getItem('ATTENDANCE_GOAL');
             userGoal = savedGoal ? Math.max(1, parseInt(savedGoal)) : 75;

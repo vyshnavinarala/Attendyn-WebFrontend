@@ -431,6 +431,7 @@
 
         // Load subjects on startup
         window.onload = function() {
+            checkAuth();
             const data = localStorage.getItem('SUBJECTS_DATA');
             if (data && JSON.parse(data).length > 0) {
                 subjects = JSON.parse(data);

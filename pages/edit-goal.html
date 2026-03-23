@@ -406,6 +406,7 @@
 
         // Initialize from localStorage or default
         document.addEventListener('DOMContentLoaded', () => {
+            checkAuth();
             const savedGoal = localStorage.getItem('ATTENDANCE_GOAL') || '75';
             slider.value = savedGoal;
             text.innerText = savedGoal + '%';

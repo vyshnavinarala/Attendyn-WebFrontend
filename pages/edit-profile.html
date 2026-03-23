@@ -444,6 +444,7 @@
         let selectedImageData = null;
 
         document.addEventListener('DOMContentLoaded', () => {
+            checkAuth();
             const userName = localStorage.getItem('USER_NAME') || 'User';
             document.getElementById('username-input').value = userName;
             

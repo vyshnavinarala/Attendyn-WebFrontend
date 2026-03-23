@@ -488,6 +488,10 @@
             localStorage.setItem('SUBJECTS_DATA', JSON.stringify(subjects));
             navigateTo('dashboard.html');
         }
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAuth();
+            renderSubjects();
+        });
     </script>
 </body>
 </html>

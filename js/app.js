@@ -10,7 +10,6 @@ document.addEventListener('DOMContentLoaded', () => {
     initRipples();
     
     // 2. Add an entry animation to the main container
-    // 2. Add an entry animation to the main container
     const container = document.querySelector('.mobile-mockup-container, .dashboard-container, .app-container');
     if (container) {
         container.style.opacity = '0';
@@ -23,6 +22,19 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+/**
+ * Global authentication check for protected pages
+ */
+function checkAuth() {
+    const token = localStorage.getItem('AUTH_TOKEN');
+    const isLoginPage = window.location.href.includes('login.html') || window.location.href.includes('register.html');
+    
+    if (!token && !isLoginPage) {
+        // Redirect to login if no token and not already on login/register
+        window.location.href = 'login.html';
+    }
+}
 
 /**
  * Navigate to a different page with a brief transition effect
@@ -69,14 +81,8 @@ function initRipples() {
  */
 function logout() {
     if (confirm('Are you sure you want to logout?')) {
-        // Clear all user relevant data from localStorage
-        localStorage.removeItem('AUTH_TOKEN');
-        localStorage.removeItem('USER_ID');
-        localStorage.removeItem('USER_NAME');
-        localStorage.removeItem('USER_EMAIL');
-        localStorage.removeItem('SUBJECTS_DATA');
-        localStorage.removeItem('ATTENDANCE_GOAL');
-        localStorage.removeItem('USER_PHOTO');
+        // Clear EVERYTHING from localStorage to ensure no data leaks
+        localStorage.clear();
         
         // Show success feedback
         alert('Logged out successfully');
