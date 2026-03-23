@@ -251,6 +251,24 @@
                 alert("Passwords do not match");
                 return;
             }
+
+            // Password complexity validation
+            if (password.length < 6) {
+                alert("Password must be at least 6 characters long.");
+                return;
+            }
+            if (!/[A-Z]/.test(password)) {
+                alert("Password must contain at least one uppercase letter.");
+                return;
+            }
+            if (!/[0-9]/.test(password)) {
+                alert("Password must contain at least one number.");
+                return;
+            }
+            if (!/[^A-Za-z0-9]/.test(password)) {
+                alert("Password must contain at least one special character.");
+                return;
+            }
             
             try {
                 // Show loading state
