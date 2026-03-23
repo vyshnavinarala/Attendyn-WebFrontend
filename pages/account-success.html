@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Attendyn - Success</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+    <style>
+        .success-bg {
+            background: linear-gradient(135deg, #F8F8FF 0%, #E8E8FF 100%);
+            min-height: 100vh;
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .success-icon {
+            width: 120px;
+            height: 120px;
+            background: rgba(34, 197, 94, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #22C55E;
+            margin-bottom: 2rem;
+            position: relative;
+            animation: bounceIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .success-icon::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: rgba(34, 197, 94, 0.1);
+            z-index: -1;
+            animation: pulse 2s infinite;
+        }
+
+        .checkmark-path {
+            stroke-dasharray: 100;
+            stroke-dashoffset: 100;
+            animation: drawCheck 0.8s ease-out 0.6s forwards;
+        }
+
+        .success-title {
+            color: #0D0D26;
+            font-size: 1.75rem;
+            font-weight: 800;
+            margin-bottom: 0.75rem;
+            animation: slideUp 0.6s ease-out 0.2s both;
+        }
+
+        .success-desc {
+            color: #545470;
+            font-size: 1rem;
+            max-width: 320px;
+            line-height: 1.5;
+            margin: 0 auto 2.5rem auto;
+            animation: slideUp 0.6s ease-out 0.4s both;
+        }
+
+        .login-btn {
+            width: 100%;
+            max-width: 280px;
+            animation: slideUp 0.6s ease-out 0.6s both;
+        }
+
+        @media (max-width: 480px) {
+            .success-icon { width: 100px; height: 100px; }
+            .success-icon svg { width: 48px; height: 48px; }
+            .success-title { font-size: 1.5rem; }
+        }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0); opacity: 0; }
+            50% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.5; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+
+        @keyframes drawCheck {
+            to { stroke-dashoffset: 0; }
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="success-bg">
+            <div class="success-icon">
+                <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <path class="checkmark-path" d="M20 6L9 17l-5-5"></path>
+                </svg>
+            </div>
+            
+            <h1 class="success-title">Success!</h1>
+            <p class="success-desc">Your password has been changed successfully. You can now login with your new password.</p>
+            
+            <button class="btn btn-primary login-btn" onclick="navigateTo('login.html')">Back to Login</button>
+        </div>
+    </div>
+
+    <script src="../js/app.js"></script>
+</body>
+</html>

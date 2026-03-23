@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Attendyn - OTP Verification</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+    <style>
+        .forgot-bg {
+            background: linear-gradient(135deg, #F8F8FF 0%, #E8E8FF 100%);
+            min-height: 100vh;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+
+        .header-text {
+            color: #0D0D26;
+            font-size: 1.75rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .sub-text {
+            color: #545470;
+            font-size: 1rem;
+            opacity: 0.8;
+            margin-bottom: 2rem;
+            text-align: center;
+            max-width: 300px;
+        }
+
+        .main-card {
+            background: var(--bg-surface);
+            border-radius: 28px;
+            box-shadow: 0 10px 40px -10px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 350px;
+            padding: 3rem 2rem;
+        }
+
+        @media (max-width: 480px) {
+            .main-card {
+                padding: 1.5rem;
+                border-radius: 24px;
+            }
+            .header-text {
+                font-size: 1.5rem;
+            }
+        }
+
+        .illustration {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1rem auto;
+            background: linear-gradient(to right, #9B66FF, #5C8DFF);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            box-shadow: 0 8px 24px rgba(123, 97, 255, 0.2);
+        }
+
+        .illustration svg {
+            width: 40px;
+            height: 40px;
+        }
+
+        .forgot-header.inside-card {
+            margin-bottom: 2rem;
+        }
+
+        .header-text {
+            color: #0D0D26;
+            font-size: 1.75rem;
+            font-weight: 800;
+            margin-bottom: 0.25rem;
+            text-align: center;
+        }
+
+        .sub-text {
+            color: #545470;
+            font-size: 0.9375rem;
+            opacity: 0.8;
+            margin: 0 auto 1.25rem auto;
+            text-align: center;
+            max-width: 280px;
+            line-height: 1.4;
+        }
+
+        .otp-container {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+
+        .otp-input {
+            width: 42px;
+            height: 52px;
+            text-align: center;
+            font-size: 1.25rem;
+            font-weight: 700;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            background: #F8F8FF;
+            color: #0D0D26;
+            transition: all 0.2s;
+        }
+
+        @media (max-width: 400px) {
+            .otp-input {
+                width: 38px;
+                height: 48px;
+            }
+            .otp-container {
+                gap: 4px;
+            }
+        }
+
+        .otp-input:focus {
+            border-color: var(--brand-purple);
+            background: #FFFFFF;
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(123, 97, 255, 0.1);
+        }
+
+        .resend-text {
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 0.875rem;
+            color: #545470;
+        }
+
+        .resend-link {
+            color: var(--btn-purple);
+            font-weight: 700;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="forgot-bg">
+            <div class="main-card">
+                <div class="illustration">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12,1L3,5v6c0,5.55 3.84,10.74 9,12c5.16,-1.26 9,-6.45 9,-12V5L12,1z"/>
+                    </svg>
+                </div>
+
+                <div class="forgot-header inside-card">
+                    <h1 class="header-text">OTP Verification</h1>
+                    <p class="sub-text">Enter the verification code we just sent to your email address.</p>
+                </div>
+
+                <form onsubmit="handleVerify(event)">
+                    <div class="otp-container">
+                        <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this, 'otp2')" id="otp1" autofocus required>
+                        <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this, 'otp3')" onkeyup="moveToPrev(event, 'otp1')" id="otp2" required>
+                        <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this, 'otp4')" onkeyup="moveToPrev(event, 'otp2')" id="otp3" required>
+                        <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this, 'otp5')" onkeyup="moveToPrev(event, 'otp3')" id="otp4" required>
+                        <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this, 'otp6')" onkeyup="moveToPrev(event, 'otp4')" id="otp5" required>
+                        <input type="text" class="otp-input" maxlength="1" onkeyup="moveToPrev(event, 'otp5')" id="otp6" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Verify & Proceed</button>
+                    
+                    <div class="resend-text">
+                        Didn't receive the code? <span class="resend-link" id="resendLink" onclick="handleResend()">Resend OTP</span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/app.js"></script>
+    <script>
+        function moveToNext(current, nextFieldId) {
+            if (current.value.length >= current.maxLength) {
+                document.getElementById(nextFieldId).focus();
+            }
+        }
+        
+        function moveToPrev(event, prevFieldId) {
+            if (event.key === "Backspace" && event.target.value === "") {
+                document.getElementById(prevFieldId).focus();
+            }
+        }
+
+        async function handleVerify(e) {
+            e.preventDefault();
+            
+            const otp = [
+                document.getElementById('otp1').value,
+                document.getElementById('otp2').value,
+                document.getElementById('otp3').value,
+                document.getElementById('otp4').value,
+                document.getElementById('otp5').value,
+                document.getElementById('otp6').value
+            ].join('');
+            
+            if (otp.length < 6) {
+                alert("Please enter the complete 6-digit OTP");
+                return;
+            }
+            
+            const email = localStorage.getItem('RESET_EMAIL');
+            if (!email) {
+                alert("Session expired. Please start over.");
+                navigateTo('forgot-password.html');
+                return;
+            }
+            
+            const verifyBtn = e.target.querySelector('button[type="submit"]');
+            
+            try {
+                verifyBtn.disabled = true;
+                verifyBtn.innerText = 'Verifying...';
+                
+                const response = await fetch(`${API_BASE_URL}/verify-otp`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, otp })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    navigateTo('reset-password.html');
+                } else {
+                    alert(data.error || 'Verification failed. Please check the OTP.');
+                }
+            } catch (error) {
+                console.error('Verify error:', error);
+                alert('Connection error. Please try again.');
+            } finally {
+                verifyBtn.disabled = false;
+                verifyBtn.innerText = 'Verify & Proceed';
+            }
+        }
+        
+        async function handleResend() {
+            const email = localStorage.getItem('RESET_EMAIL');
+            if (!email) {
+                alert("Session expired. Please start over.");
+                navigateTo('forgot-password.html');
+                return;
+            }
+            
+            const resendLink = document.getElementById('resendLink');
+            
+            try {
+                resendLink.style.pointerEvents = 'none';
+                resendLink.style.opacity = '0.5';
+                resendLink.innerText = 'Sending...';
+                
+                const response = await fetch(`${API_BASE_URL}/resend-otp`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    alert('A new OTP has been sent to your email.');
+                } else {
+                    alert(data.error || 'Failed to resend OTP.');
+                }
+            } catch (error) {
+                console.error('Resend error:', error);
+                alert('Connection error. Please try again.');
+            } finally {
+                resendLink.style.pointerEvents = 'auto';
+                resendLink.style.opacity = '1';
+                resendLink.innerText = 'Resend OTP';
+            }
+        }
+    </script>
+</body>
+</html>

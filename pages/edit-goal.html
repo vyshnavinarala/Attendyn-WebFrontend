@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Attendyn - Edit Goal</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --sidebar-width: 250px;
+            --bg-light: #F8F8FF;
+            --sidebar-bg: #FFFFFF;
+            --active-item-bg: #F5F3FF;
+            --active-item-text: #5E5CE6;
+            --brand-purple: #7B61FF;
+            --brand-blue: #5B6CFF;
+            --text-heading: #1A1C3E;
+            --text-sub: #545470;
+            --btn-purple: #5E5CE6;
+        }
+
+        body {
+            background-color: #F0F2FF;
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: var(--text-heading);
+            overflow-x: hidden;
+        }
+
+        .dashboard-container {
+            display: flex;
+            padding: 24px;
+            gap: 24px;
+            min-height: 100vh;
+            background-color: #F0F2FF;
+            box-sizing: border-box;
+        }
+
+        /* Sidebar Styling (Standardized) */
+        .sidebar { 
+            border: none; 
+            background: white; 
+            border-radius: 28px;
+            height: calc(100vh - 48px);
+            position: sticky;
+            top: 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+            display: flex;
+            flex-direction: column;
+            padding: 2rem 1.5rem;
+            z-index: 100;
+            width: 250px;
+            box-sizing: border-box;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 3rem;
+            padding-left: 0.75rem;
+        }
+
+        .logo-icon {
+            width: 40px; height: 40px;
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+
+        .logo-icon img {
+            width: 100%; height: 100%; object-fit: cover;
+        }
+
+        .logo-text { font-size: 1.25rem; font-weight: 800; color: #1A1C3E; }
+
+        .nav-group { margin-bottom: 2rem; }
+        .nav-group-title { font-size: 0.75rem; font-weight: 700; color: #A0AABF; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem; padding-left: 0.75rem; }
+
+        .nav-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 0.875rem 1rem; border-radius: 12px;
+            color: #545470; font-weight: 600; cursor: pointer;
+            transition: all 0.2s; margin-bottom: 4px; text-decoration: none;
+        }
+        .nav-item:hover { background: #FAFAFB; color: #1A1C3E; }
+        .nav-item.active { 
+            background: #5B6CFF; 
+            color: white; 
+            box-shadow: 0 8px 20px rgba(91, 108, 255, 0.25);
+        }
+        .nav-item.logout { color: #FF4D4F; }
+        .nav-item.logout:hover { background: #FFF5F5; color: #FF2D2D; }
+        .nav-item svg { width: 22px; height: 22px; }
+
+        .add-attendance-sidebar-icon {
+            width: 24px; height: 24px;
+            background: #5B6CFF;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: white; margin-right: 0;
+            transition: all 0.2s;
+        }
+
+        .nav-item.active .add-attendance-sidebar-icon {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            background: white;
+            border-radius: 28px;
+            height: calc(100vh - 48px);
+            overflow-y: auto;
+            overflow-x: hidden;
+            position: relative;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .content-header {
+            padding: 3rem 2.5rem 1.5rem 2.5rem;
+            background: #F8F9FF;
+            border-bottom: 1px solid #F1F3F9;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .back-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #1A1C3E;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+        .back-btn:hover {
+            transform: translateX(-3px);
+            background: #FAFAFB;
+        }
+
+        .screen-title { font-size: 2rem; font-weight: 800; color: #1A1C3E; margin: 0; }
+
+        .content-body {
+            padding: 2.5rem;
+            max-width: 500px;
+            margin: 0 auto;
+            width: 100%;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .goal-subtitle {
+            color: #545470;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 3rem;
+        }
+
+        /* Circular Progress Styling */
+        .progress-container {
+            position: relative;
+            width: 220px;
+            height: 220px;
+            margin: 0 auto 3rem auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .progress-ring {
+            transform: rotate(-90deg);
+        }
+
+        .progress-ring-circle {
+            stroke-dasharray: 565; /* 2 * PI * 90 */
+            stroke-dashoffset: 565;
+            transition: stroke-dashoffset 0.35s;
+            stroke-linecap: round;
+        }
+
+        .progress-ring-bg { stroke: #F1F3F9; }
+        .progress-ring-fg { stroke: url(#goalGradient); }
+
+        .percentage-display {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #percentageText {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: #1A1C3E;
+            line-height: 1;
+        }
+
+        .target-label {
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: #A0AABF;
+            letter-spacing: 1.5px;
+            margin-top: 8px;
+            text-transform: uppercase;
+        }
+
+        /* Slider Styling */
+        .slider-container {
+            width: 100%;
+            margin-bottom: 3rem;
+            padding: 0 10px;
+        }
+
+        .range-slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 8px;
+            background: #F1F3F9;
+            border-radius: 4px;
+            outline: none;
+            margin-bottom: 1rem;
+        }
+
+        .range-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 32px;
+            height: 32px;
+            background: white;
+            border: 4px solid #7B61FF;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(123, 97, 255, 0.3);
+            transition: all 0.2s;
+        }
+
+        .range-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(123, 97, 255, 0.4);
+        }
+
+        .range-labels {
+            display: flex;
+            justify-content: space-between;
+            color: #A0AABF;
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        .update-btn {
+            width: 100%;
+            height: 56px;
+            background: linear-gradient(135deg, #7B61FF 0%, #5B6CFF 100%);
+            color: white;
+            border-radius: 100px; /* Fully rounded as requested */
+            font-weight: 800;
+            font-size: 1.1rem;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(91, 108, 255, 0.3);
+            transition: all 0.3s;
+        }
+        .update-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(91, 108, 255, 0.4);
+        }
+
+        /* Mobile Adjustments */
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .dashboard-container { padding: 0; }
+            .main-content { height: 100vh; border-radius: 0; }
+            .content-header { padding: 2rem 1.5rem 1.5rem 1.5rem; }
+            .content-body { padding: 2rem 1.5rem; }
+            .progress-container { width: 180px; height: 180px; }
+            #percentageText { font-size: 3rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo-section">
+                <div class="logo-icon">
+                    <img src="../assets/logo.png" alt="Attendyn Logo">
+                </div>
+                <span class="logo-text">Attendyn</span>
+            </div>
+            
+            <nav class="nav-group">
+                <div class="nav-group-title">Menu</div>
+                <a href="javascript:void(0)" onclick="navigateTo('dashboard.html')" class="nav-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                    <span>Home</span>
+                </a>
+                <a href="javascript:void(0)" onclick="navigateTo('calendar.html')" class="nav-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                    <span>Calendar</span>
+                </a>
+                <a href="javascript:void(0)" onclick="navigateTo('analysis.html')" class="nav-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                    <span>Analysis</span>
+                </a>
+                <a href="javascript:void(0)" onclick="navigateTo('add-attendance.html')" class="nav-item">
+                    <div class="add-attendance-sidebar-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="width: 14px; height: 14px;"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    </div>
+                    <span>Add Attendance</span>
+                </a>
+            </nav>
+
+            <nav class="nav-group" style="margin-top: auto;">
+                <div class="nav-group-title">Support</div>
+                <a href="javascript:void(0)" onclick="navigateTo('profile.html')" class="nav-item active">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    <span>Profile</span>
+                </a>
+                <a href="javascript:void(0)" onclick="logout()" class="nav-item logout">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                    <span>Logout</span>
+                </a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="content-header">
+                <button class="back-btn" onclick="navigateTo('profile.html')">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                </button>
+                <h1 class="screen-title">Edit Goal</h1>
+            </header>
+
+            <div class="content-body">
+                <p class="goal-subtitle">Set your target attendance percentage</p>
+
+                <div class="progress-container">
+                    <svg class="progress-ring" width="200" height="200">
+                        <defs>
+                            <linearGradient id="goalGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#9B66FF;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#5C8DFF;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <circle class="progress-ring-bg" stroke-width="14" fill="transparent" r="90" cx="100" cy="100"/>
+                        <circle id="progressCircle" class="progress-ring-circle progress-ring-fg" stroke-width="14" fill="transparent" r="90" cx="100" cy="100"/>
+                    </svg>
+                    <div class="percentage-display">
+                        <span id="percentageText">75%</span>
+                        <span class="target-label">Target</span>
+                    </div>
+                </div>
+
+                <div class="slider-container">
+                    <input type="range" min="50" max="100" value="75" class="range-slider" id="goalSlider">
+                    <div class="range-labels">
+                        <span>50%</span>
+                        <span>100%</span>
+                    </div>
+                </div>
+
+                <button class="update-btn" onclick="updateGoal()">Update Goal</button>
+            </div>
+        </main>
+    </div>
+
+    <script src="../js/app.js"></script>
+    <script>
+        const slider = document.getElementById('goalSlider');
+        const text = document.getElementById('percentageText');
+        const circle = document.getElementById('progressCircle');
+        const radius = circle.r.baseVal.value;
+        const circumference = radius * 2 * Math.PI;
+
+        circle.style.strokeDasharray = `${circumference} ${circumference}`;
+        circle.style.strokeDashoffset = circumference;
+
+        function setProgress(percent) {
+            const offset = circumference - (percent / 100 * circumference);
+            circle.style.strokeDashoffset = offset;
+        }
+
+        slider.oninput = function() {
+            const val = this.value;
+            text.innerText = val + '%';
+            setProgress(val);
+        }
+
+        // Initialize from localStorage or default
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedGoal = localStorage.getItem('ATTENDANCE_GOAL') || '75';
+            slider.value = savedGoal;
+            text.innerText = savedGoal + '%';
+            setProgress(savedGoal);
+        });
+
+        async function updateGoal() {
+            const val = slider.value;
+            const token = localStorage.getItem('AUTH_TOKEN');
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/user/goal`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ attendance_goal: parseInt(val) })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    localStorage.setItem('ATTENDANCE_GOAL', val);
+                    alert('Attendance goal updated successfully!');
+                    navigateTo('profile.html');
+                } else {
+                    alert(data.error || 'Failed to sync goal with server.');
+                }
+            } catch (error) {
+                console.error('Update goal error:', error);
+                alert('Connection error. Please try again.');
+            }
+        }
+    </script>
+</body>
+</html>

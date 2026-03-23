@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Attendyn - Set Goal</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+    <style>
+        .goal-bg {
+            background: linear-gradient(135deg, #F8F8FF 0%, #E8E8FF 100%);
+            min-height: 100vh;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .goal-card {
+            background: var(--bg-surface);
+            border-radius: 28px;
+            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 350px;
+            padding: 3rem 2rem;
+            text-align: center;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        .goal-header {
+            margin-bottom: 2rem;
+        }
+
+        .goal-title {
+            color: #0D0D26;
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .goal-subtitle {
+            color: #545470;
+            font-size: 0.9375rem;
+            opacity: 0.8;
+            line-height: 1.4;
+        }
+
+        /* Circular Progress Styling */
+        .progress-container {
+            position: relative;
+            width: 180px;
+            height: 180px;
+            margin: 0 auto 2rem auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .progress-ring {
+            transform: rotate(-90deg);
+        }
+
+        .progress-ring-circle {
+            stroke-dasharray: 440; /* 2 * PI * 70 */
+            stroke-dashoffset: 440;
+            transition: stroke-dashoffset 0.35s;
+            stroke-linecap: round;
+        }
+
+        .progress-ring-bg {
+            stroke: #F1F3F9;
+        }
+
+        .progress-ring-fg {
+            stroke: url(#goalGradient);
+        }
+
+        .percentage-display {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #percentageText {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #0D0D26;
+            line-height: 1;
+        }
+
+        .target-label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: #A0AABF;
+            letter-spacing: 1px;
+            margin-top: 4px;
+        }
+
+        /* Custom Slider Styling */
+        .slider-container {
+            margin-bottom: 2.5rem;
+            padding: 0 10px;
+        }
+
+        .range-slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 6px;
+            background: #F1F3F9;
+            border-radius: 3px;
+            outline: none;
+            margin-bottom: 0.75rem;
+        }
+
+        .range-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            background: #7B61FF;
+            border: 4px solid white;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(123, 97, 255, 0.3);
+            transition: transform 0.2s;
+        }
+
+        .range-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+        }
+
+        .range-labels {
+            display: flex;
+            justify-content: space-between;
+            color: #8B8B97;
+            font-size: 0.8125rem;
+            font-weight: 600;
+        }
+
+        .continue-btn {
+            width: 100%;
+            padding: 1rem;
+            border-radius: 100px;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 480px) {
+            .goal-card {
+                padding: 2rem 1.5rem;
+                border-radius: 24px;
+            }
+            .progress-container {
+                width: 150px;
+                height: 150px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="goal-bg">
+            <div class="goal-card">
+                <div class="goal-header">
+                    <h1 class="goal-title">Set Attendance Goal</h1>
+                    <p class="goal-subtitle">What's your target attendance percentage?</p>
+                </div>
+
+                <div class="progress-container">
+                    <svg class="progress-ring" width="160" height="160">
+                        <defs>
+                            <linearGradient id="goalGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#9B66FF;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#5C8DFF;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <circle class="progress-ring-bg" stroke-width="12" fill="transparent" r="70" cx="80" cy="80"/>
+                        <circle id="progressCircle" class="progress-ring-fg" stroke-width="12" fill="transparent" r="70" cx="80" cy="80"/>
+                    </svg>
+                    <div class="percentage-display">
+                        <span id="percentageText">75%</span>
+                        <span class="target-label">TARGET</span>
+                    </div>
+                </div>
+
+                <div class="slider-container">
+                    <input type="range" min="50" max="100" value="75" class="range-slider" id="goalSlider">
+                    <div class="range-labels">
+                        <span>50%</span>
+                        <span>100%</span>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary continue-btn" onclick="saveGoal()">Continue</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/app.js"></script>
+    <script>
+        const slider = document.getElementById('goalSlider');
+        const text = document.getElementById('percentageText');
+        const circle = document.getElementById('progressCircle');
+        const radius = circle.r.baseVal.value;
+        const circumference = radius * 2 * Math.PI;
+
+        circle.style.strokeDasharray = `${circumference} ${circumference}`;
+        circle.style.strokeDashoffset = circumference;
+
+        function setProgress(percent) {
+            const offset = circumference - (percent / 100 * circumference);
+            circle.style.strokeDashoffset = offset;
+        }
+
+        slider.oninput = function() {
+            const val = this.value;
+            text.innerText = val + '%';
+            setProgress(val);
+        }
+
+        // Initialize
+        setProgress(75);
+
+        async function saveGoal() {
+            const val = document.getElementById('goalSlider').value;
+            const token = localStorage.getItem('AUTH_TOKEN');
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/user/goal`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ attendance_goal: parseInt(val) })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    localStorage.setItem('ATTENDANCE_GOAL', val);
+                    navigateTo('add-subject.html');
+                } else {
+                    alert(data.error || 'Failed to sync goal with server.');
+                }
+            } catch (error) {
+                console.error('Save goal error:', error);
+                alert('Connection error. Please try again.');
+            }
+        }
+    </script>
+</body>
+</html>

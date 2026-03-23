@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Attendyn - Register</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+    <style>
+        .login-bg {
+            background: linear-gradient(135deg, #F8F8FF 0%, #E8E8FF 100%);
+            min-height: 100vh;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .login-header {
+            text-align: center;
+            width: 100%;
+            margin-bottom: 2rem;
+        }
+
+        .welcome-text {
+            color: #0D0D26;
+            font-size: 1.75rem;
+            font-weight: 800;
+            margin-bottom: 0.25rem;
+        }
+
+        .signin-text {
+            color: #545470;
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+
+        .login-card {
+            background: var(--bg-surface);
+            border-radius: 28px;
+            box-shadow: 0 10px 40px -10px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 350px;
+            padding: 1.25rem 1.75rem;
+        }
+
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 1.5rem;
+                border-radius: 24px;
+            }
+            .welcome-text {
+                font-size: 1.5rem;
+            }
+        }
+
+        .input-group {
+            margin-bottom: 0.75rem;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            background: #F8F8FF;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-md);
+            transition: all 0.2s;
+        }
+        
+        .input-wrapper:focus-within {
+            border-color: var(--brand-purple);
+            background: #FFFFFF;
+            box-shadow: 0 0 0 4px rgba(123, 97, 255, 0.1);
+        }
+
+        .input-icon {
+            padding-left: 1rem;
+            color: #545470;
+            display: flex;
+            align-items: center;
+        }
+        
+        .input-icon svg {
+            width: 20px; height: 20px;
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 1rem 1rem 1rem 0.75rem;
+            border: none;
+            background: transparent;
+            font-size: 1rem;
+            color: #0D0D26;
+            outline: none;
+        }
+
+        .password-toggle {
+            padding: 0 1rem;
+            cursor: pointer;
+            color: #545470;
+            display: flex;
+            align-items: center;
+        }
+
+        .register-container {
+            margin-top: 1.5rem;
+            text-align: center;
+            font-size: 0.875rem;
+        }
+        
+        .register-text {
+            color: #545470;
+            opacity: 0.8;
+        }
+        
+        .register-link {
+            color: var(--btn-purple);
+            font-weight: 700;
+        }
+
+        .app-icon-card {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            background: linear-gradient(45deg, #9B66FF, #5C8DFF);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem auto;
+            box-shadow: 0 8px 20px rgba(123, 97, 255, 0.2);
+        }
+
+        .app-icon-card svg {
+            width: 28px;
+            height: 28px;
+            color: white;
+        }
+
+        .login-header.inside-card {
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="login-bg">
+            <div class="login-card">
+                <div class="app-icon-card">
+                    <svg viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12,12c2.21,0 4,-1.79 4,-4s-1.79,-4 -4,-4 -4,1.79 -4,4 1.79,4 4,4zM12,14c-2.67,0 -8,1.34 -8,4v2h16v-2c0,-2.66 -5.33,-4 -8,-4z" />
+                    </svg>
+                </div>
+                <div class="login-header inside-card">
+                    <h1 class="welcome-text">Create Account</h1>
+                    <p class="signin-text">Get started by creating your account</p>
+                </div>
+                <form id="registerForm" onsubmit="handleRegister(event)">
+                    <div class="input-group">
+                        <label class="form-label">Full Name</label>
+                        <div class="input-wrapper">
+                            <div class="input-icon">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                            </div>
+                            <input type="text" id="nameInput" class="login-input" placeholder="Enter your full name" required>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="form-label">Email</label>
+                        <div class="input-wrapper">
+                            <div class="input-icon">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+                            </div>
+                            <input type="email" id="emailInput" class="login-input" placeholder="Enter your email" required>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="form-label">Password</label>
+                        <div class="input-wrapper">
+                            <div class="input-icon">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                            </div>
+                            <input type="password" id="passwordInput" class="login-input" placeholder="Create a password" required>
+                            <div class="password-toggle" onclick="togglePassword('passwordInput', 'eyeIcon1')">
+                                <svg id="eyeIcon1" fill="none" stroke="var(--brand-purple)" viewBox="0 0 24 24" style="width:22px;height:22px;stroke-width:2.5;">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="form-label">Confirm Password</label>
+                        <div class="input-wrapper">
+                            <div class="input-icon">
+                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path></svg>
+                            </div>
+                            <input type="password" id="confirmPasswordInput" class="login-input" placeholder="Confirm your password" required>
+                            <div class="password-toggle" onclick="togglePassword('confirmPasswordInput', 'eyeIcon2')">
+                                <svg id="eyeIcon2" fill="none" stroke="var(--brand-purple)" viewBox="0 0 24 24" style="width:22px;height:22px;stroke-width:2.5;">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="margin-top: 16px;">Register</button>
+                </form>
+
+                <div class="register-container">
+                    <span class="register-text">Already have an account? </span>
+                    <a href="javascript:void(0)" onclick="navigateTo('login.html')" class="register-link">Login here</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/app.js"></script>
+    <script>
+        function togglePassword(inputId, iconId) {
+            const input = document.getElementById(inputId);
+            const eyeIcon = document.getElementById(iconId);
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                eyeIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88" />`;
+            } else {
+                input.type = 'password';
+                eyeIcon.innerHTML = `<path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />`;
+            }
+        }
+
+        async function handleRegister(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('nameInput').value;
+            const email = document.getElementById('emailInput').value;
+            const password = document.getElementById('passwordInput').value;
+            const confirm = document.getElementById('confirmPasswordInput').value;
+            const registerBtn = e.target.querySelector('button[type="submit"]');
+            
+            if (password !== confirm) {
+                alert("Passwords do not match");
+                return;
+            }
+            
+            try {
+                // Show loading state
+                registerBtn.disabled = true;
+                registerBtn.innerText = 'Creating account...';
+                
+                const response = await fetch(`${API_BASE_URL}/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name, email, password })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    // Store auth data
+                    localStorage.setItem('AUTH_TOKEN', data.token);
+                    localStorage.setItem('USER_ID', data.user.id);
+                    localStorage.setItem('USER_NAME', data.user.name);
+                    localStorage.setItem('USER_EMAIL', data.user.email);
+                    localStorage.setItem('ATTENDANCE_GOAL', data.user.attendance_goal);
+                    
+                    // Clear any leftover subjects or goals from previous sessions
+                    localStorage.removeItem('SUBJECTS_DATA');
+                    localStorage.removeItem('USER_PHOTO');
+                    
+                    // Redirect to set goal page as per onboarding flow
+                    navigateTo('set-goal.html');
+                } else {
+                    alert(data.error || 'Registration failed. Please try again.');
+                }
+            } catch (error) {
+                console.error('Registration error:', error);
+                alert('Connection error. Please ensure the backend server is running.');
+            } finally {
+                registerBtn.disabled = false;
+                registerBtn.innerText = 'Register';
+            }
+        }
+    </script>
+</body>
+</html>

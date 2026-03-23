@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Attendyn - Dashboard</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --sidebar-width: 250px;
+            --bg-light: #F8F8FF;
+            --sidebar-bg: #FFFFFF;
+            --active-item-bg: #F5F3FF;
+            --active-item-text: #5E5CE6;
+            --brand-purple: #7B61FF;
+            --brand-blue: #5B6CFF;
+            --text-heading: #1A1C3E;
+            --text-sub: #545470;
+            --btn-purple: #5E5CE6;
+        }
+
+        body {
+            background-color: #F0F2FF;
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: var(--text-heading);
+            overflow-x: hidden;
+        }
+
+        .dashboard-container {
+            display: flex;
+            padding: 24px;
+            gap: 24px;
+            min-height: 100vh;
+            background-color: #F0F2FF;
+            box-sizing: border-box;
+        }
+
+        /* Sidebar Styling */
+        .sidebar { 
+            border: none; 
+            background: white; 
+            border-radius: 28px;
+            height: calc(100vh - 48px);
+            position: sticky;
+            top: 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+            display: flex;
+            flex-direction: column;
+            padding: 2rem 1.5rem;
+            z-index: 100;
+            width: 250px;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 3rem;
+            padding-left: 0.75rem;
+        }
+
+        .logo-icon {
+            width: 40px; height: 40px;
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden;
+            background: transparent;
+            border-radius: 14px;
+        }
+
+        .logo-icon img {
+            width: 100%; height: 100%; object-fit: cover;
+        }
+
+        .logo-text { font-size: 1.25rem; font-weight: 800; color: #1A1C3E; }
+
+        .nav-group { margin-bottom: 2rem; }
+        .nav-group-title { font-size: 0.75rem; font-weight: 700; color: #A0AABF; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem; padding-left: 0.75rem; }
+
+        .nav-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 0.875rem 1rem; border-radius: 12px;
+            color: #545470; font-weight: 600; cursor: pointer;
+            transition: all 0.2s; margin-bottom: 4px; text-decoration: none;
+        }
+        .nav-item:hover { background: #FAFAFB; color: #1A1C3E; }
+        .nav-item.active { 
+            background: #5B6CFF; 
+            color: white; 
+            box-shadow: 0 8px 20px rgba(91, 108, 255, 0.25);
+        }
+        .nav-item.logout { color: #FF4D4F; margin-top: auto; }
+        .nav-item.logout:hover { background: #FFF5F5; color: #FF2D2D; }
+        .nav-item svg { width: 22px; height: 22px; }
+        
+        .add-attendance-sidebar-icon {
+            width: 24px; height: 24px;
+            background: #5B6CFF;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: white; margin-right: 0;
+            transition: all 0.2s;
+        }
+
+        .nav-item.active .add-attendance-sidebar-icon {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        /* Dashboard Specific Styles */
+        .main-content {
+            flex: 1;
+            background: white;
+            border-radius: 28px;
+            height: calc(100vh - 48px);
+            overflow-y: auto;
+            overflow-x: hidden;
+            position: relative;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+        }
+
+        .dashboard-header {
+            background: linear-gradient(90deg, #9B66FF 0%, #5C8DFF 100%);
+            padding: 3rem 2.5rem 6.5rem 2.5rem;
+            color: white;
+            position: relative;
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-header { padding: 3rem 1.5rem 6rem 1.5rem; }
+        }
+
+        .welcome-msg { font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem; }
+        .welcome-sub { font-size: 1.1rem; opacity: 0.9; }
+
+        .dashboard-body {
+            padding: 0 2.5rem 2.5rem 2.5rem;
+            margin-top: -4.5rem; 
+            max-width: 1000px;
+            position: relative;
+            z-index: 10;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-body { padding: 0 1.25rem 3rem 1.25rem; margin-top: -5rem; }
+        }
+
+        /* Overall Card */
+        .overall-card {
+            background: white;
+            border-radius: 28px;
+            padding: 1.75rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            margin-bottom: 1.5rem;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        .overall-info { flex: 1; }
+        .overall-label { color: var(--text-sub); font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+        
+        .overall-stats { display: flex; align-items: center; gap: 12px; margin: 0.5rem 0; }
+        .overall-percent { font-size: 2.25rem; font-weight: 900; color: var(--text-heading); }
+        .risk-badge { 
+            padding: 4px 12px; border-radius: 10px; font-size: 0.75rem; font-weight: 800; color: white;
+            text-transform: uppercase;
+        }
+        .badge-safe { background: var(--attendance-green); }
+        .badge-medium { background: var(--attendance-orange); }
+        .badge-high { background: var(--attendance-red); }
+
+        .overall-goal { color: #A0AABF; font-size: 0.85rem; font-weight: 600; }
+
+        .progress-container { position: relative; width: 90px; height: 90px; }
+        .progress-icon { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #D1D5DB; }
+
+        /* Insight Card */
+        .insight-card {
+            background: #FFF9EE;
+            border: 1px solid #FFE7B3;
+            border-radius: 20px;
+            padding: 1rem 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            animation: slideUp 0.7s ease-out;
+        }
+
+        .insight-icon { color: #F59E0B; }
+        .insight-content h4 { margin: 0; font-size: 1rem; font-weight: 800; color: #78350F; }
+        .insight-content p { margin: 0; font-size: 0.875rem; color: #B45309; }
+
+        /* Quick Actions */
+        .section-title { font-size: 1.5rem; font-weight: 800; margin-top: 2rem; margin-bottom: 1.25rem; display: flex; justify-content: space-between; align-items: center; }
+        .view-all-link { font-size: 1rem; color: #5E5CE6; font-weight: 800; cursor: pointer; }
+
+        .quick-actions-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.25rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .action-card {
+            background: white;
+            border-radius: 24px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border: 1px solid #F1F3F9;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .action-card:hover { 
+            transform: translateY(-8px); 
+            box-shadow: 0 15px 30px rgba(0,0,0,0.08);
+            border-color: rgba(123, 97, 255, 0.2);
+        }
+
+        .action-card:active {
+            transform: translateY(-2px) scale(0.96);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.04);
+            transition: all 0.1s;
+        }
+
+        .action-card:hover .action-icon-box {
+            transform: scale(1.1);
+        }
+
+        .action-icon-box {
+            width: 56px; height: 56px; border-radius: 18px; margin: 0 auto 1rem auto;
+            display: flex; align-items: center; justify-content: center; color: white;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .pink-grad { background: #CB33CB; }
+        .purple-grad { background: #7B61FF; }
+
+        .action-name { font-weight: 700; font-size: 1rem; color: var(--text-heading); }
+
+        /* Subject List */
+        .subject-dashboard-item {
+            background: white;
+            border-radius: 24px;
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.875rem;
+            border: 1px solid #F1F3F9;
+            animation: slideIn 0.3s ease-out;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .subject-dashboard-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            border-color: rgba(123, 97, 255, 0.15);
+        }
+
+        .subject-info h3 { margin: 0 0 4px 0; font-size: 1.1rem; font-weight: 800; }
+        .subject-stats { font-size: 0.85rem; color: var(--text-sub); font-weight: 600; }
+
+        .subject-percent-status { text-align: right; }
+        .item-percent { display: block; font-size: 1.1rem; font-weight: 800; color: var(--text-heading); margin-bottom: 4px; }
+        .item-badge { padding: 2px 8px; border-radius: 6px; font-size: 0.65rem; font-weight: 800; color: white; text-transform: uppercase; }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1.5rem;
+            background: white;
+            border-radius: 28px;
+            margin-top: 1rem;
+        }
+
+        .empty-icon { width: 80px; height: 80px; background: #F5F3FF; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem auto; color: var(--brand-purple); }
+
+        .empty-state h2 { font-size: 1.5rem; font-weight: 800; margin-bottom: 0.75rem; }
+        .empty-state p { color: var(--text-sub); margin-bottom: 2rem; max-width: 250px; margin-inline: auto; }
+
+        .add-subject-empty-btn {
+            background: var(--brand-purple);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 100px;
+            font-weight: 700;
+            display: inline-block;
+            box-shadow: 0 8px 20px rgba(123, 97, 255, 0.3);
+        }
+
+        /* Animations */
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* Responsive Bottom Nav fix */
+        @media (max-width: 768px) {
+            .dashboard-container { padding: 0; gap: 0; display: block; }
+            .main-content { border-radius: 0; margin: 0; width: 100%; min-height: 100vh; box-shadow: none; }
+            .dashboard-header { border-radius: 0 0 30px 30px; }
+            .dashboard-body { padding: 0 1.25rem 3rem 1.25rem; margin-top: -5rem; }
+        }
+
+        #progressCircle {
+            transition: stroke-dashoffset 1.5s cubic-bezier(0.4, 0, 0.2, 1), stroke 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo-section">
+                <div class="logo-icon">
+                    <img src="../assets/logo.png?v=3" alt="Attendyn Logo">
+                </div>
+                <span class="logo-text">Attendyn</span>
+            </div>
+            
+            <nav class="nav-group">
+                <div class="nav-group-title">Menu</div>
+                <a href="javascript:void(0)" onclick="navigateTo('dashboard.html')" class="nav-item active">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                    <span>Home</span>
+                </a>
+                <a href="javascript:void(0)" onclick="navigateTo('calendar.html')" class="nav-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                    <span>Calendar</span>
+                </a>
+                <a href="javascript:void(0)" onclick="navigateTo('analysis.html')" class="nav-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                    <span>Analysis</span>
+                </a>
+                <a href="javascript:void(0)" onclick="navigateTo('add-attendance.html')" class="nav-item">
+                    <div class="add-attendance-sidebar-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="width: 14px; height: 14px;"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    </div>
+                    <span>Add Attendance</span>
+                </a>
+            </nav>
+
+            <nav class="nav-group" style="margin-top: auto;">
+                <div class="nav-group-title">Support</div>
+                <a href="javascript:void(0)" onclick="navigateTo('profile.html')" class="nav-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    <span>Profile</span>
+                </a>
+                <a href="javascript:void(0)" onclick="logout()" class="nav-item logout">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                    <span>Logout</span>
+                </a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="dashboard-header">
+                <h1 class="welcome-msg" id="greetingText">Good morning, User!</h1>
+                <p class="welcome-sub">Track your attendance progress</p>
+            </header>
+
+            <div class="dashboard-body">
+                <!-- Overall Attendance Card -->
+                <div class="overall-card" id="overallCard">
+                    <div class="overall-info">
+                        <span class="overall-label">Overall Attendance</span>
+                        <div class="overall-stats">
+                            <span class="overall-percent" id="overallPercent">0.0%</span>
+                            <span class="risk-badge" id="riskBadge">Safe</span>
+                        </div>
+                        <span class="overall-goal" id="goalText">Goal: 75%</span>
+                    </div>
+                    <div class="progress-container">
+                        <svg width="90" height="90" viewBox="0 0 90 90">
+                            <circle cx="45" cy="45" r="38" fill="none" stroke="#F1F3F9" stroke-width="9" />
+                            <circle id="progressCircle" cx="45" cy="45" r="38" fill="none" stroke="var(--brand-purple)" stroke-width="9" stroke-dasharray="238.76" stroke-dashoffset="238.76" stroke-linecap="round" transform="rotate(-90 45 45)" />
+                        </svg>
+                        <div class="progress-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Smart Insight Card -->
+                <div class="insight-card" id="insightCard">
+                    <div class="insight-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"></path><path d="M10 22h4"></path><path d="M12 2a7 7 0 0 0-7 7c0 2.38 1.19 4.47 3 5.74V17h8v-2.26c1.81-1.27 3-3.36 3-5.74a7 7 0 0 0-7-7z"></path></svg>
+                    </div>
+                    <div class="insight-content">
+                        <h4>Smart Insight</h4>
+                        <p id="insightText">Great! Your attendance is on track.</p>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <h2 class="section-title" id="quickActionsTitle">Quick Actions</h2>
+                <div class="quick-actions-grid" id="quickActionsGrid">
+                    <div class="action-card" onclick="navigateTo('add-subject.html')">
+                        <div class="action-icon-box pink-grad">
+                            <svg width="28" height="28" viewBox="0 0 100 100">
+                                <path fill="white" d="M50,88 L12,72 L12,28 C12,18 42,18 50,30 L50,88 Z" />
+                                <path fill="white" d="M50,88 L88,72 L88,28 C88,18 58,18 50,30 L50,88 Z" />
+                                <path stroke="#E64DE6" stroke-width="2" d="M50,30 L50,88" />
+                                <path stroke="#E64DE6" stroke-width="1.2" stroke-linecap="round" d="M25,40 Q35,38 45,40" />
+                                <path stroke="#E64DE6" stroke-width="1.2" stroke-linecap="round" d="M25,48 Q35,46 45,48" />
+                                <path stroke="#E64DE6" stroke-width="1.2" stroke-linecap="round" d="M25,56 Q35,54 45,56" />
+                                <path stroke="#E64DE6" stroke-width="1.2" stroke-linecap="round" d="M55,40 Q65,38 75,40" />
+                                <path stroke="#E64DE6" stroke-width="1.2" stroke-linecap="round" d="M55,48 Q65,46 75,48" />
+                                <path stroke="#E64DE6" stroke-width="1.2" stroke-linecap="round" d="M55,56 Q65,54 75,56" />
+                            </svg>
+                        </div>
+                        <span class="action-name">Add Subject</span>
+                    </div>
+                    <div class="action-card" onclick="navigateTo('analysis.html')">
+                        <div class="action-icon-box purple-grad">
+                            <svg width="28" height="28" viewBox="0 0 24 24">
+                                <path fill="white" d="M19,3H5C3.9,3,3,3.9,3,5v14c0,1.1,0.9,2,2,2h14c1.1,0,2,-0.9,2,-2V5C21,3.9,20.1,3,19,3z M9,17H7v-7h2V17z M13,17h-2V7h2V17z M17,17h-2v-4h2V17z" />
+                            </svg>
+                        </div>
+                        <span class="action-name">Analysis</span>
+                    </div>
+                </div>
+
+                <!-- Subjects Section -->
+                <div id="subjectsHeader" class="section-title">
+                    <span>Your Subjects</span>
+                    <span class="view-all-link" id="viewAllBtn" onclick="toggleViewAll()">View All</span>
+                </div>
+                
+                <div id="subjectsList">
+                    <!-- Dynamic Subjects here -->
+                </div>
+
+                <!-- Empty State -->
+                <div id="emptyState" class="empty-state" style="display: none;">
+                    <div class="empty-icon">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor"><path d="M21,5c-1.11,-0.35 -2.33,-0.5 -3.5,-0.5c-1.95,0 -4.05,0.4 -5.5,1.5c-1.45,-1.1 -3.55,-1.5 -5.5,-1.5S2.45,4.9 1,6v14.65c0,0.25 0.25,0.5 0.5,0.5c0.1,0 0.15,-0.05 0.25,-0.05C3.1,20.45 5.05,20 6.5,20c1.95,0 4.05,0.4 5.5,1.5c1.35,-0.85 3.1,-1.5 5.5,-1.5c1.65,0 3.35,0.3 4.75,1.05c0.1,0.05 0.15,0.05 0.25,0.05c0.25,0 0.5,-0.25 0.5,-0.5V6c-0.6,-0.45 -1.35,-0.75 -2,-1zM21,18.5c-1.1,-0.35 -2.3,-0.5 -3.5,-0.5c-1.7,0 -3.45,0.3 -5,1V7c1.6,-0.7 3.3,-1 5,-1c1.2,0 2.4,0.15 3.5,0.5V18.5z" /></svg>
+                    </div>
+                    <h2>No Subjects Added Yet</h2>
+                    <p>Add your subjects to start tracking your attendance</p>
+                    <a href="javascript:void(0)" onclick="navigateTo('add-subject.html')" class="add-subject-empty-btn">+ Add Subject</a>
+                </div>
+            </div>
+        </main>
+
+        <!-- Bottom Navigation (Mobile) -->
+        <nav class="bottom-nav">
+            <div class="m-nav-item active">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                <span>Home</span>
+            </div>
+            <div class="m-nav-item" onclick="navigateTo('calendar.html')">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                <span>Calendar</span>
+            </div>
+            <div class="m-nav-item" onclick="navigateTo('add-attendance.html')">
+                <div class="m-fab"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></div>
+            </div>
+            <div class="m-nav-item" onclick="navigateTo('analysis.html')">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                <span>Analysis</span>
+            </div>
+            <div class="m-nav-item" onclick="navigateTo('profile.html')">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                <span>Profile</span>
+            </div>
+        </nav>
+    </div>
+
+    <!-- Desktop FAB REMOVED AS REQUESTED -->
+
+    <script src="../js/app.js"></script>
+    <script>
+        // Load data from localStorage
+        const subjects = JSON.parse(localStorage.getItem('SUBJECTS_DATA')) || [];
+        const userGoal = parseInt(localStorage.getItem('ATTENDANCE_GOAL')) || 75;
+        const username = localStorage.getItem('USER_NAME') || 'User';
+
+        let isShowingAll = false;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initDashboard();
+        });
+
+        async function initDashboard() {
+            updateGreeting();
+            await fetchSubjects();
+        }
+
+        async function fetchSubjects() {
+            const token = localStorage.getItem('AUTH_TOKEN');
+            if (!token) return;
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/subjects`, {
+                    method: 'GET',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Update global subjects array and localStorage
+                    subjects.length = 0;
+                    subjects.push(...data);
+                    localStorage.setItem('SUBJECTS_DATA', JSON.stringify(subjects));
+                    
+                    updateStats();
+                    renderSubjects();
+                } else {
+                    console.error('Failed to fetch subjects:', data.error);
+                    // Fallback to localStorage if API fails
+                    updateStats();
+                    renderSubjects();
+                }
+            } catch (error) {
+                console.error('Fetch subjects error:', error);
+                // Fallback to localStorage
+                updateStats();
+                renderSubjects();
+            }
+        }
+
+        function updateGreeting() {
+            const hour = new Date().getHours();
+            let greeting = "Good evening";
+            if (hour < 12) greeting = "Good morning";
+            else if (hour < 17) greeting = "Good afternoon";
+            
+            document.getElementById('greetingText').innerText = `${greeting}, ${username}!`;
+            document.getElementById('goalText').innerText = `Goal: ${userGoal}%`;
+        }
+
+        function updateStats() {
+            if (subjects.length === 0) {
+                document.getElementById('overallCard').style.display = 'none';
+                document.getElementById('insightCard').style.display = 'none';
+                document.getElementById('quickActionsTitle').style.display = 'none';
+                document.getElementById('quickActionsGrid').style.display = 'none';
+                document.getElementById('subjectsHeader').style.display = 'none';
+                document.getElementById('emptyState').style.display = 'block';
+                return;
+            }
+
+            document.getElementById('overallCard').style.display = 'flex';
+            document.getElementById('insightCard').style.display = 'flex';
+            document.getElementById('quickActionsTitle').style.display = 'flex';
+            document.getElementById('quickActionsGrid').style.display = 'grid';
+            document.getElementById('subjectsHeader').style.display = 'flex';
+            document.getElementById('emptyState').style.display = 'none';
+
+            let totalConducted = 0;
+            let totalAttended = 0;
+            let highRiskCount = 0;
+
+            subjects.forEach(s => {
+                totalConducted += parseInt(s.conducted);
+                totalAttended += parseInt(s.attended);
+                const p = (s.attended / s.conducted) * 100;
+                if (p < (userGoal - 10)) highRiskCount++;
+            });
+
+            const overallPercent = totalConducted > 0 ? (totalAttended / totalConducted) * 100 : 0;
+            
+            // Update UI
+            document.getElementById('overallPercent').innerText = overallPercent.toFixed(1) + '%';
+            
+            const badge = document.getElementById('riskBadge');
+            const circle = document.getElementById('progressCircle');
+            const circumference = 38 * 2 * Math.PI;
+            
+            let riskColor = '#22C55E';
+            if (overallPercent >= userGoal) {
+                badge.innerText = 'Safe';
+                badge.className = 'risk-badge badge-safe';
+                riskColor = '#22C55E';
+            } else if (overallPercent >= (userGoal - 10)) {
+                badge.innerText = 'Medium';
+                badge.className = 'risk-badge badge-medium';
+                riskColor = '#F59E0B';
+            } else {
+                badge.innerText = 'High';
+                badge.className = 'risk-badge badge-high';
+                riskColor = '#EF4444';
+            }
+
+            // Circular progress
+            circle.style.stroke = riskColor;
+            const offset = circumference - (overallPercent / 100 * circumference);
+            circle.style.strokeDashoffset = offset;
+
+            // Smart Insight Logic - Exactly matching Mobile
+            if (highRiskCount > 0) {
+                document.getElementById('insightText').innerText = `You have ${highRiskCount} subjects at high risk. Attend upcoming classes to improve.`;
+            } else {
+                document.getElementById('insightText').innerText = "Great! Your attendance is on track.";
+            }
+        }
+
+        function renderSubjects() {
+            const list = document.getElementById('subjectsList');
+            list.innerHTML = '';
+            
+            const displayList = isShowingAll ? subjects : subjects.slice(0, 2);
+            
+            displayList.forEach(s => {
+                const p = (s.attended / s.conducted) * 100;
+                let badgeClass = 'badge-high';
+                let status = 'High';
+                if (p >= userGoal) { badgeClass = 'badge-safe'; status = 'Safe'; }
+                else if (p >= (userGoal - 10)) { badgeClass = 'badge-medium'; status = 'Medium'; }
+
+                const item = document.createElement('div');
+                item.className = 'subject-dashboard-item';
+                item.onclick = () => navigateTo(`analysis.html?subject=${encodeURIComponent(s.name)}`);
+                item.innerHTML = `
+                    <div class="subject-info">
+                        <h3>${s.name}</h3>
+                        <span class="subject-stats">${s.attended} / ${s.conducted} classes attended</span>
+                    </div>
+                    <div class="subject-percent-status">
+                        <span class="item-percent">${p.toFixed(1)}%</span>
+                        <span class="item-badge ${badgeClass}">${status}</span>
+                    </div>
+                `;
+                list.appendChild(item);
+            });
+
+            document.getElementById('viewAllBtn').innerText = isShowingAll ? 'View Less' : 'View All';
+            document.getElementById('viewAllBtn').style.display = subjects.length > 0 ? 'block' : 'none'; // Ensure it's visible if there are subjects
+        }
+
+        function toggleViewAll() {
+            isShowingAll = !isShowingAll;
+            renderSubjects();
+        }
+
+        // Removed local handleLogout to use global logout() from app.js
+    </script>
+</body>
+</html>

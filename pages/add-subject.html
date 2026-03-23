@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Attendyn - Add Subjects</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+    <style>
+        .add-subject-bg {
+            background: linear-gradient(135deg, #F8F8FF 0%, #E8E8FF 100%);
+            min-height: 100vh;
+            padding: 2rem 1rem 140px 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container-card {
+            width: 100%;
+            max-width: 650px; /* Increased to 650px as requested */
+            animation: slideUp 0.6s ease-out;
+        }
+
+        .header-section {
+            text-align: center;
+            margin-bottom: 2rem;
+            margin-top: 1rem;
+        }
+
+        .icon-box {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #5C8DFF, #2E5BFF);
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem auto;
+            color: white;
+            box-shadow: 0 8px 20px rgba(92, 141, 255, 0.3);
+        }
+
+        .icon-box svg { width: 44px; height: 44px; }
+
+        .title-text { color: #0D0D26; font-size: 1.75rem; font-weight: 800; margin-bottom: 0.5rem; }
+        .subtitle-text { color: #545470; font-size: 1rem; opacity: 0.8; }
+
+        .input-card {
+            background: white;
+            border-radius: 28px;
+            padding: 2.5rem; /* Slightly more padding for the wider card */
+            box-shadow: 0 10px 40px -10px rgba(0,0,0,0.1);
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group { margin-bottom: 1.5rem; }
+        .form-label { display: block; font-size: 0.875rem; font-weight: 700; color: #1A1C3E; margin-bottom: 0.6rem; }
+        
+        .input-wrapper {
+            background: #F8F8FF;
+            border: 1px solid #E5E7EB;
+            border-radius: 16px;
+            padding: 0 1.25rem;
+            transition: all 0.2s;
+        }
+
+        .input-wrapper:focus-within {
+            border-color: var(--brand-purple);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(123, 97, 255, 0.1);
+        }
+
+        .subject-input {
+            width: 100%;
+            padding: 1.125rem 0;
+            border: none;
+            background: transparent;
+            font-size: 1rem;
+            color: #545470;
+            outline: none;
+            font-weight: 600;
+        }
+
+        .row-inputs { display: flex; gap: 1.5rem; }
+        .row-inputs .form-group { flex: 1; }
+
+        .calc-card {
+            background: #F0F4FF; /* Noticed request for light background */
+            border-radius: 22px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            display: none;
+            border: 1px solid rgba(92, 141, 255, 0.15);
+            animation: bounceIn 0.5s cubic-bezier(0.18, 0.89, 0.32, 1.28); /* Scale-up animation */
+        }
+
+        .calc-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+        .calc-header span { font-size: 0.8rem; font-weight: 700; color: #545470; text-transform: uppercase; letter-spacing: 0.8px; }
+        .calc-percentage { font-size: 2.5rem; font-weight: 900; display: block; transition: color 0.3s; }
+
+        .add-btn {
+            width: 100%;
+            margin-top: 2rem;
+            padding: 1.25rem;
+            border-radius: 100px;
+            font-weight: 800;
+            font-size: 1.125rem;
+            opacity: 0.5;
+            pointer-events: none;
+            transition: all 0.2s;
+        }
+
+        .add-btn.active { opacity: 1; pointer-events: auto; }
+
+        /* Centered Added Subjects List */
+        .subjects-section {
+            width: 100%;
+            max-width: 650px; /* Matches the container above */
+            display: none;
+            margin-top: 2rem;
+            overflow: hidden;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 1.25rem;
+            padding-left: 0.5rem; /* Centered relative to the card */
+        }
+
+        .status-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--brand-purple); }
+        .section-title { font-size: 1.25rem; font-weight: 800; color: #0D0D26; }
+
+        .horizontal-scroll-container {
+            width: 100%;
+            overflow-x: auto;
+            padding-bottom: 1.5rem;
+            display: flex;
+            gap: 16px;
+            scroll-snap-type: x mandatory;
+            scrollbar-width: none;
+        }
+
+        .horizontal-scroll-container::-webkit-scrollbar { display: none; }
+
+        .subject-card {
+            min-width: 180px; /* Slightly wider cards for the wider container */
+            width: 180px;
+            height: 160px;
+            background: white;
+            border-radius: 24px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 1px solid #F1F3F9;
+            scroll-snap-align: start;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .card-name {
+            font-weight: 800;
+            color: #1A1C3E;
+            font-size: 1rem;
+            margin-bottom: 8px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .card-stats {
+            font-size: 0.75rem;
+            color: #707070;
+            font-weight: 600;
+            line-height: 1.5;
+            opacity: 0.8;
+        }
+
+        .percentage-badge {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            padding: 6px 12px;
+            border-radius: 10px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: white;
+        }
+
+        .badge-green { background: #22C55E; }
+        .badge-orange { background: #F59E0B; }
+        .badge-red { background: #EF4444; }
+
+        .footer-fixed {
+            position: fixed;
+            bottom: 0; left: 0; right: 0;
+            padding: 1.5rem;
+            background: linear-gradient(to top, white 80%, rgba(255,255,255,0));
+            display: flex;
+            justify-content: center;
+            z-index: 100;
+        }
+
+        .continue-btn {
+            width: 100%;
+            max-width: 400px;
+            padding: 1.25rem;
+            border-radius: 100px;
+            font-weight: 800;
+            font-size: 1.125rem;
+            opacity: 0.5;
+            pointer-events: none;
+            box-shadow: 0 8px 24px rgba(123, 97, 255, 0.25);
+        }
+
+        .continue-btn.active { opacity: 1; pointer-events: auto; }
+
+        @keyframes bounceIn {
+            0% { transform: scale(0.9); opacity: 0; }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        .error-text {
+            color: #EF4444;
+            font-size: 0.825rem;
+            font-weight: 700;
+            margin-top: -0.5rem;
+            margin-bottom: 1.5rem;
+            display: none;
+            animation: slideUp 0.3s ease-out;
+            text-align: center;
+            width: 100%;
+        }
+
+        @media (max-width: 680px) {
+            .container-card, .subjects-section { max-width: 95%; }
+            .section-header { padding-left: 1rem; }
+            .horizontal-scroll-container { padding-left: 1rem; padding-right: 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div class="add-subject-bg">
+            <div class="container-card">
+                <div class="header-section">
+                    <div class="icon-box">
+                        <svg viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M21,5c-1.11,-0.35 -2.33,-0.5 -3.5,-0.5c-1.95,0 -4.05,0.4 -5.5,1.5c-1.45,-1.1 -3.55,-1.5 -5.5,-1.5S2.45,4.9 1,6v14.65c0,0.25 0.25,0.5 0.5,0.5c0.1,0 0.15,-0.05 0.25,-0.05C3.1,20.45 5.05,20 6.5,20c1.95,0 4.05,0.4 5.5,1.5c1.35,-0.85 3.1,-1.5 5.5,-1.5c1.65,0 3.35,0.3 4.75,1.05c0.1,0.05 0.15,0.05 0.25,0.05c0.25,0 0.5,-0.25 0.5,-0.5V6c-0.6,-0.45 -1.35,-0.75 -2,-1zM21,18.5c-1.1,-0.35 -2.3,-0.5 -3.5,-0.5c-1.7,0 -3.45,0.3 -5,1V7c1.6,-0.7 3.3,-1 5,-1c1.2,0 2.4,0.15 3.5,0.5V18.5z" />
+                        </svg>
+                    </div>
+                    <h1 class="title-text">Add Subjects</h1>
+                    <p class="subtitle-text">Sync your subjects to start tracking</p>
+                </div>
+
+                <div class="input-card">
+                    <div class="form-group">
+                        <label class="form-label">Subject Name</label>
+                        <div class="input-wrapper">
+                            <input type="text" id="subjectName" class="subject-input" placeholder="e.g. Mathematics" maxlength="30">
+                        </div>
+                    </div>
+
+                    <div class="row-inputs">
+                        <div class="form-group">
+                            <label class="form-label">Conducted</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="conducted" class="subject-input" placeholder="0" min="0">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Attended</label>
+                            <div class="input-wrapper">
+                                <input type="number" id="attended" class="subject-input" placeholder="0" min="0">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="errorMessage" class="error-text">Attended classes cannot be more than conducted classes</div>
+
+                    <div id="calcCard" class="calc-card">
+                        <div class="calc-header">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="10" x2="16" y2="10"/><line x1="8" y1="14" x2="16" y2="14"/><line x1="8" y1="18" x2="16" y2="18"/></svg>
+                            <span>Calculated Attendance</span>
+                        </div>
+                        <span id="calcPercentage" class="calc-percentage">0.00%</span>
+                    </div>
+
+                    <button id="addBtn" class="btn btn-primary add-btn" onclick="addSubject()">+ Add Subject</button>
+                </div>
+            </div>
+
+            <div id="subjectsSection" class="subjects-section">
+                <div class="section-header">
+                    <div class="status-dot"></div>
+                    <span id="subjectsCount" class="section-title">Added Subjects (0)</span>
+                </div>
+                <div id="subjectsItems" class="horizontal-scroll-container">
+                    <!-- Dynamic Moble-Style Cards -->
+                </div>
+            </div>
+
+            <div class="footer-fixed">
+                <button id="continueBtn" class="btn btn-primary continue-btn" onclick="finishSetup()">Continue to Dashboard</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/app.js"></script>
+    <script>
+        const subjectNameInput = document.getElementById('subjectName');
+        const conductedInput = document.getElementById('conducted');
+        const attendedInput = document.getElementById('attended');
+        const calcCard = document.getElementById('calcCard');
+        const calcPercentageText = document.getElementById('calcPercentage');
+        const addBtn = document.getElementById('addBtn');
+        const subjectsSection = document.getElementById('subjectsSection');
+        const subjectsItems = document.getElementById('horizontal-scroll-container') || document.getElementById('subjectsItems');
+        const subjectsCountText = document.getElementById('subjectsCount');
+        const continueBtn = document.getElementById('continueBtn');
+
+        let subjects = JSON.parse(localStorage.getItem('SUBJECTS_DATA')) || [];
+        let userGoal = parseInt(localStorage.getItem('ATTENDANCE_GOAL')) || 75;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderSubjects();
+            validateAndCalc();
+        });
+
+        function validateAndCalc() {
+            const name = subjectNameInput.value.trim();
+            const conductedStr = conductedInput.value;
+            const attendedStr = attendedInput.value;
+            const conducted = parseInt(conductedStr) || 0;
+            const attended = parseInt(attendedStr) || 0;
+            const errorMsg = document.getElementById('errorMessage');
+
+            let isValid = false;
+            let percentage = 0;
+            let showCalc = false;
+
+            if (conductedStr.length > 0 && attendedStr.length > 0 && attended > conducted) {
+                // error: attended > conducted
+                errorMsg.style.display = 'block';
+                showCalc = false;
+                isValid = false;
+            } else {
+                errorMsg.style.display = 'none';
+                
+                if (conductedStr.length > 0 && conducted > 0 && attendedStr.length > 0 && attended >= 0 && attended <= conducted && name.length > 0) {
+                    percentage = (attended / conducted) * 100;
+                    isValid = true;
+                    showCalc = true;
+                }
+            }
+
+            if (showCalc) {
+                calcCard.style.display = 'block';
+                calcPercentageText.innerText = percentage.toFixed(2) + '%';
+                
+                if (percentage >= userGoal) {
+                    calcPercentageText.style.color = '#22C55E';
+                } else if (percentage >= (userGoal - 10)) {
+                    calcPercentageText.style.color = '#F59E0B';
+                } else {
+                    calcPercentageText.style.color = '#EF4444';
+                }
+            } else {
+                calcCard.style.display = 'none';
+            }
+
+            if (isValid) {
+                addBtn.classList.add('active');
+            } else {
+                addBtn.classList.remove('active');
+            }
+        }
+
+        [subjectNameInput, conductedInput, attendedInput].forEach(inp => {
+            inp.addEventListener('input', validateAndCalc);
+        });
+
+        async function addSubject() {
+            const name = subjectNameInput.value.trim();
+            const conducted = parseInt(conductedInput.value);
+            const attended = parseInt(attendedInput.value);
+
+            if (subjects.some(s => s.name.toLowerCase() === name.toLowerCase())) {
+                alert('Subject already added!');
+                return;
+            }
+
+            const token = localStorage.getItem('AUTH_TOKEN');
+            const addBtn = document.getElementById('addBtn');
+            
+            try {
+                // Show loading state
+                addBtn.disabled = true;
+                addBtn.innerText = 'Adding...';
+                
+                const response = await fetch(`${API_BASE_URL}/subjects`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ name, conducted, attended })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    // Update subjects from response which should include the new ID
+                    subjects.push(data.subject || { name, conducted, attended });
+                    localStorage.setItem('SUBJECTS_DATA', JSON.stringify(subjects));
+                    renderSubjects();
+                    clearInputs();
+                    alert('Subject added successfully!');
+                } else {
+                    alert(data.error || 'Failed to add subject.');
+                }
+            } catch (error) {
+                console.error('Add subject error:', error);
+                alert('Connection error. Please try again.');
+            } finally {
+                addBtn.disabled = false;
+                addBtn.innerText = '+ Add Subject';
+                validateAndCalc();
+            }
+        }
+
+        function renderSubjects() {
+            const container = document.getElementById('subjectsItems');
+            container.innerHTML = '';
+            subjects.forEach((s, index) => {
+                const percentage = (s.attended / s.conducted) * 100;
+                let badgeClass = 'badge-red';
+                if (percentage >= userGoal) badgeClass = 'badge-green';
+                else if (percentage >= (userGoal - 10)) badgeClass = 'badge-orange';
+
+                const card = document.createElement('div');
+                card.className = 'subject-card';
+                card.innerHTML = `
+                    <span class="card-name">${s.name}</span>
+                    <span class="card-stats">Conducted: ${s.conducted}<br>Attended: ${s.attended}</span>
+                    <div class="percentage-badge ${badgeClass}">${percentage.toFixed(1)}%</div>
+                `;
+                container.appendChild(card);
+            });
+
+            const count = subjects.length;
+            subjectsCountText.innerText = `Added Subjects (${count})`;
+            subjectsSection.style.display = count > 0 ? 'block' : 'none';
+            
+            if (count > 0) {
+                continueBtn.classList.add('active');
+            } else {
+                continueBtn.classList.remove('active');
+            }
+        }
+
+        function clearInputs() {
+            subjectNameInput.value = '';
+            conductedInput.value = '';
+            attendedInput.value = '';
+            validateAndCalc();
+        }
+
+        function finishSetup() {
+            localStorage.setItem('SUBJECTS_DATA', JSON.stringify(subjects));
+            navigateTo('dashboard.html');
+        }
+    </script>
+</body>
+</html>

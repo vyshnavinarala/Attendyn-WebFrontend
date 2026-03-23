@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Attendyn - Analysis</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --sidebar-width: 250px;
+            --bg-light: #F8F9FF;
+            --sidebar-bg: #FFFFFF;
+            --active-item-bg: #F5F3FF;
+            --active-item-text: #5E5CE6;
+            --brand-purple: #7B61FF;
+            --brand-blue: #5B6CFF;
+            --text-heading: #1A1C3E;
+            --text-sub: #545470;
+            --text-muted: #8B8B97;
+            --btn-purple: #5E5CE6;
+            --att-green: #22C55E;
+            --att-orange: #F59E0B;
+            --att-red: #EF4444;
+            --att-mixed: #FFE082;
+            --insight-bg: #F5F3FF;
+            --insight-accent: #635BFF;
+        }
+
+        body {
+            background-color: var(--bg-light);
+            margin: 0;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            color: var(--text-heading);
+            overflow-x: hidden;
+        }
+
+        .dashboard-container {
+            display: flex;
+            padding: 24px;
+            gap: 24px;
+            min-height: 100vh;
+            background-color: var(--bg-light);
+            box-sizing: border-box;
+        }
+
+        /* Sidebar Styling */
+        .sidebar { 
+            border: none; 
+            background: white; 
+            border-radius: 28px;
+            height: calc(100vh - 48px);
+            position: sticky;
+            top: 24px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+            display: flex;
+            flex-direction: column;
+            padding: 2rem 1.5rem;
+            z-index: 100;
+            width: 250px;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 3rem;
+            padding-left: 0.75rem;
+        }
+
+        .logo-icon {
+            width: 40px; height: 40px;
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden;
+            background: transparent;
+            border-radius: 14px;
+        }
+
+        .logo-icon img { width: 100%; height: 100%; object-fit: cover; }
+        .logo-text { font-size: 1.25rem; font-weight: 800; color: #1A1C3E; }
+
+        .nav-group { margin-bottom: 2rem; }
+        .nav-group-title { font-size: 0.75rem; font-weight: 700; color: #A0AABF; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem; padding-left: 0.75rem; }
+
+        .nav-item {
+            display: flex; align-items: center; gap: 12px;
+            padding: 0.875rem 1rem; border-radius: 12px;
+            color: #545470; font-weight: 600; cursor: pointer;
+            transition: all 0.2s; margin-bottom: 4px; text-decoration: none;
+        }
+        .nav-item:hover { background: #FAFAFB; color: #1A1C3E; }
+        .nav-item.active { 
+            background: #5B6CFF; 
+            color: white; 
+            box-shadow: 0 8px 20px rgba(91, 108, 255, 0.25);
+        }
+        .nav-item.logout { color: #FF4D4F; margin-top: auto; }
+        .nav-item.logout:hover { background: #FFF5F5; color: #FF2D2D; }
+        .nav-item svg { width: 22px; height: 22px; }
+
+        .add-attendance-sidebar-icon {
+            width: 24px; height: 24px;
+            background: #5B6CFF;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            color: white;
+            transition: all 0.2s;
+        }
+
+        .nav-item.active .add-attendance-sidebar-icon { background: rgba(255, 255, 255, 0.2); }
+
+        /* Main Content Styling */
+        .main-content {
+            flex: 1;
+            max-width: 800px;
+            margin: 0 auto;
+            padding-bottom: 100px; /* Space for mobile nav */
+        }
+
+        .analysis-header {
+            margin-bottom: 24px;
+        }
+
+        .screen-title { font-size: 1.75rem; font-weight: 800; margin-bottom: 4px; color: #1A1C3E; }
+        .screen-subtitle { font-size: 0.9rem; color: var(--text-muted); }
+
+        /* Cards Styling */
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 16px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.04);
+            border: 1px solid rgba(0,0,0,0.02);
+        }
+
+        /* Subject Selection Card */
+        .selection-card {
+            padding: 16px 20px;
+        }
+
+        .selection-label {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-sub);
+            margin-bottom: 12px;
+            display: block;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .subject-spinner {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1.5px solid #F1F3F9;
+            background-color: #F8FAFC;
+            font-family: inherit;
+            font-weight: 600;
+            color: #1A1C3E;
+            cursor: pointer;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .subject-spinner:focus {
+            border-color: var(--brand-blue);
+        }
+
+        /* Stats Card */
+        .stats-card-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .stats-left {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .att-label { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 8px; }
+        .att-percentage { font-size: 3rem; font-weight: 800; color: #1A1C3E; line-height: 1; }
+        .goal-label { font-size: 0.9rem; color: var(--text-muted); margin-top: 12px; }
+
+        .donut-container {
+            width: 120px;
+            height: 120px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .donut-ring {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: conic-gradient(var(--brand-blue) var(--percent), #F1F3F9 0);
+            mask: radial-gradient(farthest-side, transparent calc(100% - 12px), black calc(100% - 11px));
+            -webkit-mask: radial-gradient(farthest-side, transparent calc(100% - 12px), black calc(100% - 11px));
+        }
+
+        .donut-text-container {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .donut-percent { font-size: 1.25rem; font-weight: 700; color: #1A1C3E; }
+        .status-badge {
+            font-size: 0.65rem;
+            font-weight: 800;
+            color: white;
+            background: var(--att-red);
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-top: 4px;
+            text-transform: uppercase;
+        }
+
+        /* Insight Card */
+        .insight-card {
+            background-color: var(--insight-bg);
+            border: none;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .header-icon-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--insight-accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+
+        .header-title { font-size: 1.1rem; font-weight: 800; color: #1A1C3E; }
+
+        .insight-text {
+            font-size: 0.85rem;
+            color: #4B5563;
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        /* Prediction Card */
+        .prediction-subtitle { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 20px; }
+        
+        .prediction-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .prediction-item {
+            padding: 20px;
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .prediction-item.green { background-color: #F0FDF4; border: 1px solid #DCFCE7; }
+        .prediction-item.red { background-color: #FEF2F2; border: 1px solid #FEE2E2; }
+
+        .pred-icon-box {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin-bottom: 16px;
+        }
+
+        .pred-icon-box.green { background: var(--att-green); }
+        .pred-icon-box.red { background: var(--att-red); }
+
+        .pred-label { font-size: 0.8rem; font-weight: 700; color: #1A1C3E; line-height: 1.4; }
+        .pred-value { font-size: 1.75rem; font-weight: 800; margin-top: 10px; }
+        .pred-value.green { color: var(--att-green); }
+        .pred-value.red { color: var(--att-red); }
+
+        /* Calculator Card */
+        .calculator-card {
+            border: 1px solid #F1F3F9;
+        }
+
+        .calc-header { display: flex; align-items: center; gap: 16px; }
+        .calc-icon-box {
+            width: 48px; height: 48px;
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            color: white;
+        }
+        .calc-icon-box.green { background: var(--att-green); }
+        .calc-icon-box.orange { background: var(--att-orange); }
+
+        .calc-titles { display: flex; flex-direction: column; }
+        .calc-main-title { font-size: 1.2rem; font-weight: 800; color: #1A1C3E; }
+        .calc-status-text { font-size: 0.8rem; color: var(--text-muted); margin-top: 2px; }
+
+        .calc-result-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 0;
+            margin: 12px 0;
+        }
+
+        .result-number-group {
+            display: flex;
+            align-items: baseline;
+            gap: 8px;
+        }
+
+        .result-number { font-size: 3.5rem; font-weight: 800; }
+        .result-unit { font-size: 1.25rem; font-weight: 700; }
+        
+        .calc-desc { font-size: 0.85rem; color: var(--text-sub); text-align: center; }
+
+        .tip-box {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 14px;
+            border-radius: 14px;
+            margin-top: 16px;
+        }
+
+        .tip-box.green { background-color: #EAF7EE; }
+        .tip-box.orange { background-color: #FFF7ED; }
+
+        .tip-box svg { width: 14px; height: 14px; margin-top: 2px; flex-shrink: 0; }
+        .tip-text { font-size: 0.75rem; line-height: 1.5; font-weight: 500; }
+        
+        .tip-box.green .tip-text, .tip-box.green svg { color: #166534; }
+        .tip-box.orange .tip-text, .tip-box.orange svg { color: #9A3412; }
+
+        /* Empty State */
+        .empty-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px 24px;
+            text-align: center;
+        }
+
+        .empty-illustration {
+            width: 140px; height: 140px;
+            background: #F0F4FF;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 24px;
+            color: var(--brand-blue);
+        }
+
+        .empty-title { font-size: 1.25rem; font-weight: 800; margin-bottom: 8px; }
+        .empty-desc { color: var(--text-sub); font-size: 0.95rem; }
+
+        /* Navigation */
+        .bottom-nav {
+            position: fixed; bottom: 0; left: 0; right: 0;
+            height: 80px; background: white;
+            display: none; align-items: center; justify-content: space-around;
+            padding-bottom: env(safe-area-inset-bottom);
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.05);
+            z-index: 1000;
+        }
+
+        .m-nav-item {
+            display: flex; flex-direction: column; align-items: center;
+            gap: 4px; color: #A0AABF; text-decoration: none;
+            font-size: 0.7rem; font-weight: 700;
+        }
+        .m-nav-item.active { color: var(--brand-blue); }
+        .m-nav-item svg { width: 24px; height: 24px; }
+
+        .m-fab {
+            width: 56px; height: 56px; background: var(--brand-purple);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            color: white; margin-top: -30px; box-shadow: 0 8px 20px rgba(123, 97, 255, 0.4);
+        }
+
+        @media (max-width: 768px) {
+            .sidebar { display: none; }
+            .dashboard-container { padding: 16px; }
+            .main-content { max-width: 100%; border-radius: 0; }
+            .bottom-nav { display: flex; }
+            .att-percentage { font-size: 2.5rem; }
+            .donut-container { width: 100px; height: 100px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo-section">
+                <div class="logo-icon"><img src="../assets/logo.png?v=3" alt="Attendyn Logo"></div>
+                <span class="logo-text">Attendyn</span>
+            </div>
+            
+            <nav class="nav-group">
+                <div class="nav-group-title">Menu</div>
+                <a href="javascript:void(0)" onclick="navigateTo('dashboard.html')" class="nav-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                    <span>Home</span>
+                </a>
+                <a href="javascript:void(0)" onclick="navigateTo('calendar.html')" class="nav-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                    <span>Calendar</span>
+                </a>
+                <a href="javascript:void(0)" onclick="navigateTo('analysis.html')" class="nav-item active">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                    <span>Analysis</span>
+                </a>
+                <a href="javascript:void(0)" onclick="navigateTo('add-attendance.html')" class="nav-item">
+                    <div class="add-attendance-sidebar-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="width: 14px; height: 14px;"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    </div>
+                    <span>Add Attendance</span>
+                </a>
+            </nav>
+
+            <nav class="nav-group" style="margin-top: auto;">
+                <div class="nav-group-title">Support</div>
+                <a href="javascript:void(0)" onclick="navigateTo('profile.html')" class="nav-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                    <span>Profile</span>
+                </a>
+                <a href="javascript:void(0)" onclick="logout()" class="nav-item logout">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                    <span>Logout</span>
+                </a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content" id="main-content">
+            <div id="loading-state">
+                <p>Loading analysis...</p>
+            </div>
+
+            <div id="empty-state" class="empty-state" style="display: none;">
+                <div class="empty-illustration">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                </div>
+                <h2 class="empty-title">No Subject Data Available</h2>
+                <p class="empty-desc">Add subjects to view attendance analysis</p>
+            </div>
+
+            <div id="analysis-view" style="display: none;">
+                <div class="analysis-header">
+                    <h1 class="screen-title">Analysis</h1>
+                    <p class="screen-subtitle">Intelligent attendance evaluation</p>
+                </div>
+
+                <!-- Subject Selection -->
+                <div class="card selection-card">
+                    <label class="selection-label">Select Subject to Analyze</label>
+                    <select id="subject-spinner" class="subject-spinner" onchange="handleSubjectChange()">
+                        <!-- Options injected here -->
+                    </select>
+                </div>
+
+                <!-- Main Stats -->
+                <div class="card">
+                    <div class="stats-card-content">
+                        <div class="stats-left">
+                            <span class="att-label">Attendance</span>
+                            <span id="tv-percentage" class="att-percentage">0.0%</span>
+                            <span id="tv-goal-percentage" class="goal-label">Goal: 75%</span>
+                        </div>
+                        <div class="donut-container">
+                            <div id="donut-ring" class="donut-ring" style="--percent: 0%;"></div>
+                            <div class="donut-text-container">
+                                <span id="tv-donut-percentage" class="donut-percent">0%</span>
+                                <div id="status-badge" class="status-badge">Safe</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AI Insight -->
+                <div id="insight-card" class="card insight-card">
+                    <div class="card-header">
+                        <div class="header-icon-circle">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 1 0 6 8c0 1.3.5 2.6 1.5 3.5.8.8 1.3 1.5 1.5 2.5"></path><line x1="9" y1="18" x2="15" y2="18"></line><line x1="10" y1="22" x2="14" y2="22"></line></svg>
+                        </div>
+                        <span class="header-title">AI Insight</span>
+                    </div>
+                    <p id="tv-ai-insight-text" class="insight-text">Analyzing your attendance data...</p>
+                </div>
+
+                <!-- Predictions -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="header-icon-circle" style="background: #F1F3F9; color: var(--brand-blue);">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                        </div>
+                        <span class="header-title">Attendance Prediction</span>
+                    </div>
+                    <p class="prediction-subtitle">What happens after your next class?</p>
+                    <div class="prediction-grid">
+                        <div class="prediction-item green">
+                            <div class="pred-icon-box green">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                            </div>
+                            <span class="pred-label">Attend<br>Next Class</span>
+                            <span id="tv-prediction-attend" class="pred-value green">0.0%</span>
+                        </div>
+                        <div class="prediction-item red">
+                            <div class="pred-icon-box red">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="15" y1="9" x2="9" y2="15"></line><line x1="9" y1="9" x2="15" y2="15"></line></svg>
+                            </div>
+                            <span class="pred-label">Miss<br>Next Class</span>
+                            <span id="tv-prediction-miss" class="pred-value red">0.0%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Safe Leave Calculator Card -->
+                <div id="safe-leave-card" class="card calculator-card">
+                    <div class="calc-header">
+                        <div class="calc-icon-box green">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                        </div>
+                        <div class="calc-titles">
+                            <span class="calc-main-title">Safe Leave Calculator</span>
+                            <span id="safe-status-text" class="calc-status-text">You're in the safe zone!</span>
+                        </div>
+                    </div>
+                    <div id="safe-result-box" class="calc-result-box">
+                        <div class="result-number-group">
+                            <span id="safe-result-number" class="result-number" style="color: #22C55E;">0</span>
+                            <span class="result-unit" style="color: #22C55E;">Classes</span>
+                        </div>
+                        <p id="safe-result-desc" class="calc-desc">Calculating safe leaves...</p>
+                    </div>
+                    <div id="safe-tip-box" class="tip-box green">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 1 0 6 8c0 1.3.5 2.6 1.5 3.5.8.8 1.3 1.5 1.5 2.5"></path><line x1="9" y1="18" x2="15" y2="18"></line><line x1="10" y1="22" x2="14" y2="22"></line></svg>
+                        <span class="tip-text">Maintain consistent attendance to keep this buffer. Every class counts!</span>
+                    </div>
+                </div>
+
+                <!-- Classes Needed Card -->
+                <div id="classes-needed-card" class="card calculator-card">
+                    <div class="calc-header">
+                        <div class="calc-icon-box orange">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                        </div>
+                        <div class="calc-titles">
+                            <span class="calc-main-title">Classes Needed</span>
+                            <span id="needed-status-text" class="calc-status-text">To reach safe zone</span>
+                        </div>
+                    </div>
+                    <div id="needed-result-box" class="calc-result-box">
+                        <div id="needed-result-group" class="result-number-group">
+                            <span id="needed-result-number" class="result-number" style="color: #EA580C;">0</span>
+                            <span class="result-unit" style="color: #EA580C;">Classes</span>
+                        </div>
+                        <p id="needed-result-desc" class="calc-desc">Calculating needed classes...</p>
+                    </div>
+                    <div id="needed-tip-box" class="tip-box orange">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 1 0 6 8c0 1.3.5 2.6 1.5 3.5.8.8 1.3 1.5 1.5 2.5"></path><line x1="9" y1="18" x2="15" y2="18"></line><line x1="10" y1="22" x2="14" y2="22"></line></svg>
+                        <span class="tip-text">Stay consistent! Every attended class brings you closer to your goal.</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Bottom Nav -->
+        <nav class="bottom-nav">
+            <a href="javascript:void(0)" onclick="navigateTo('dashboard.html')" class="m-nav-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                <span>Home</span>
+            </a>
+            <a href="javascript:void(0)" onclick="navigateTo('calendar.html')" class="m-nav-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+                <span>Calendar</span>
+            </a>
+            <div class="m-nav-item" onclick="navigateTo('add-attendance.html')">
+                <div class="m-fab"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></div>
+            </div>
+            <a href="javascript:void(0)" onclick="navigateTo('analysis.html')" class="m-nav-item active">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
+                <span>Analysis</span>
+            </a>
+            <a href="javascript:void(0)" onclick="navigateTo('profile.html')" class="m-nav-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                <span>Profile</span>
+            </a>
+        </nav>
+    </div>
+
+    <script src="../js/app.js"></script>
+    <script>
+        let subjects = [];
+        let userGoal = 75;
+        let selectedSubject = null;
+
+        document.addEventListener('DOMContentLoaded', init);
+
+        function init() {
+            // Load goal
+            const savedGoal = localStorage.getItem('ATTENDANCE_GOAL');
+            userGoal = savedGoal ? Math.max(1, parseInt(savedGoal)) : 75;
+            document.getElementById('tv-goal-percentage').textContent = `Goal: ${userGoal}%`;
+
+            // Load subjects
+            const data = localStorage.getItem('SUBJECTS_DATA');
+            if (data) {
+                subjects = JSON.parse(data);
+                if (subjects.length > 0) {
+                    populateSpinner();
+                    document.getElementById('loading-state').style.display = 'none';
+                    document.getElementById('analysis-view').style.display = 'block';
+
+                    // Deep Link Logic (Matching Mobile)
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const preSelectedName = urlParams.get('subject');
+                    let initialSubject = subjects[0];
+
+                    if (preSelectedName) {
+                        const index = subjects.findIndex(s => s.name === preSelectedName);
+                        if (index !== -1) {
+                            initialSubject = subjects[index];
+                            document.getElementById('subject-spinner').value = index;
+                        }
+                    }
+                    
+                    updateUI(initialSubject);
+                } else {
+                    showEmptyState();
+                }
+            } else {
+                showEmptyState();
+            }
+        }
+
+        function showEmptyState() {
+            document.getElementById('loading-state').style.display = 'none';
+            document.getElementById('empty-state').style.display = 'flex';
+            document.getElementById('analysis-view').style.display = 'none';
+        }
+
+        function populateSpinner() {
+            const spinner = document.getElementById('subject-spinner');
+            spinner.innerHTML = '';
+            subjects.forEach((s, index) => {
+                const opt = document.createElement('option');
+                opt.value = index;
+                opt.textContent = s.name;
+                spinner.appendChild(opt);
+            });
+        }
+
+        function handleSubjectChange() {
+            const index = document.getElementById('subject-spinner').value;
+            updateUI(subjects[index]);
+        }
+
+        function updateUI(subject) {
+            selectedSubject = subject;
+            
+            // Formula: percentage = (attended / conducted) * 100
+            const percentage = subject.conducted > 0 ? (subject.attended / subject.conducted) * 100 : 0;
+            
+            // Sync with UI
+            document.getElementById('tv-percentage').textContent = `${percentage.toFixed(1)}%`;
+            document.getElementById('tv-donut-percentage').textContent = `${Math.round(percentage)}%`;
+            document.getElementById('donut-ring').style.setProperty('--percent', `${percentage}%`);
+
+            if (subject.conducted === 0) {
+                document.getElementById('tv-ai-insight-text').textContent = "No attendance data available.";
+                document.getElementById('status-badge').textContent = "No Data";
+                document.getElementById('status-badge').style.background = "#F59E0B";
+                document.getElementById('donut-ring').style.setProperty('--percent', `0%`);
+                // Hide specific cards if needed
+                return;
+            }
+
+            // Status Badge
+            const badge = document.getElementById('status-badge');
+            let color = '';
+            let label = '';
+            
+            if (percentage >= userGoal) {
+                color = '#22C55E'; label = 'Safe';
+            } else if (percentage >= (userGoal - 10)) {
+                color = '#F59E0B'; label = 'Medium Risk';
+            } else {
+                color = '#EF4444'; label = 'High Risk';
+            }
+            badge.textContent = label;
+            badge.style.background = color;
+            document.getElementById('donut-ring').style.background = `conic-gradient(${color} ${percentage}%, #F1F3F9 0)`;
+
+            // Insight Text
+            const insightText = document.getElementById('tv-ai-insight-text');
+            const goalDecimal = userGoal / 100.0;
+
+            if (percentage >= userGoal) {
+                const diff = percentage - userGoal;
+                if (userGoal === 100) {
+                    insightText.textContent = "Flawless! You have a perfect 100% attendance. Keep it up!";
+                } else {
+                    const safe = Math.floor((subject.attended - goalDecimal * subject.conducted) / goalDecimal);
+                    const finalSafe = safe < 0 ? 0 : safe;
+                    insightText.textContent = `Excellent! Your attendance is in the safe zone. You're ${diff.toFixed(1)}% above your goal and can afford to miss ${finalSafe} classes safely.`;
+                }
+            } else {
+                const diff = userGoal - percentage;
+                if (userGoal === 100) {
+                    insightText.textContent = `You can't reach 100% after missing a class. You're currently at ${percentage.toFixed(1)}%. Aim for a realistic goal!`;
+                } else {
+                    insightText.textContent = `Be careful! You're ${diff.toFixed(1)}% below your goal. Missing the next class may reduce your attendance further. Stay focused!`;
+                }
+            }
+
+            // Predictions
+            const nextAttend = ((subject.attended + 1) / (subject.conducted + 1)) * 100;
+            const nextMiss = (subject.attended / (subject.conducted + 1)) * 100;
+            
+            document.getElementById('tv-prediction-attend').textContent = `${nextAttend.toFixed(1)}%`;
+            document.getElementById('tv-prediction-miss').textContent = `${nextMiss.toFixed(1)}%`;
+
+            // Calculator
+            updateCalculator(subject);
+        }
+
+        function updateCalculator(subject) {
+            const goalDecimal = userGoal / 100.0;
+            const percentage = subject.conducted > 0 ? (subject.attended / subject.conducted) * 100 : 0;
+
+            const safeCard = document.getElementById('safe-leave-card');
+            const neededCard = document.getElementById('classes-needed-card');
+            
+            const safeResultNum = document.getElementById('safe-result-number');
+            const safeResultDesc = document.getElementById('safe-result-desc');
+            const safeStatus = document.getElementById('safe-status-text');
+            
+            const neededResultNum = document.getElementById('needed-result-number');
+            const neededResultDesc = document.getElementById('needed-result-desc');
+            const neededStatus = document.getElementById('needed-status-text');
+            const neededResultGroup = document.getElementById('needed-result-group');
+
+            if (percentage >= userGoal) {
+                // Safe Case: Show Safe Leave Calculator, hide Classes Needed
+                safeCard.style.display = 'block';
+                neededCard.style.display = 'none';
+
+                const safe = Math.floor((subject.attended - goalDecimal * subject.conducted) / goalDecimal);
+                const finalSafe = safe < 0 ? 0 : safe;
+
+                safeResultNum.textContent = finalSafe;
+                safeStatus.textContent = finalSafe > 0 ? "You're in the safe zone!" : "No safe leave available.";
+                safeResultDesc.textContent = finalSafe > 0 ? `You can safely miss ${finalSafe} more classes and still stay above your ${userGoal}% goal.` : "You cannot afford to miss any classes right now.";
+            } else {
+                // Risk Case (Medium/High): Show Classes Needed, hide Safe Leave
+                safeCard.style.display = 'none';
+                neededCard.style.display = 'block';
+
+                if (userGoal === 100) {
+                    neededStatus.textContent = "Goal Unreachable";
+                    neededResultGroup.style.display = "none";
+                    neededResultDesc.textContent = "You can't reach 100% after missing a class.";
+                } else {
+                    const needed = Math.ceil((goalDecimal * subject.conducted - subject.attended) / (1.0 - goalDecimal));
+                    const finalNeeded = needed < 0 ? 0 : needed;
+                    neededStatus.textContent = "To reach safe zone";
+                    neededResultNum.textContent = finalNeeded;
+                    neededResultDesc.textContent = `Attend next ${finalNeeded} classes consecutively to reach your ${userGoal}% goal.`;
+                    neededResultGroup.style.display = "flex";
+                }
+            }
+        }
+
+        function navigateTo(page) {
+            window.location.href = page;
+        }
+
+        function logout() {
+            localStorage.removeItem('IS_LOGGED_IN');
+            window.location.href = 'login.html';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
+
+:root {
+    /* Brand Colors */
+    --brand-purple: #7B61FF;
+    --brand-blue: #5B6CFF;
+    --btn-purple: #5E5CE6;
+    
+    /* Splash Screen Transitions */
+    --splash-bg-start: #120822;
+    --splash-bg-center: #591DA9;
+    --splash-bg-end: #2A1885;
+    
+    /* Gradients */
+    --logout-btn-gradient-start: #FF5A5F;
+    --logout-btn-gradient-end: #FF3B30;
+    --update-btn-gradient-start: #7B61FF;
+    --update-btn-gradient-end: #5B6CFF;
+    --quick-pink-start: #FF82A9;
+    --quick-pink-end: #FF5678;
+    --quick-purple-start: #9D88FF;
+    --quick-purple-end: #7B61FF;
+    --quick-purple-add-subject: #CB33CB;
+
+    /* Text Colors */
+    --text-primary: #111111;
+    --text-secondary: #545470;
+    --text-light: #FFFFFF;
+    
+    /* Backgrounds */
+    --bg-main: #F8F8FF;
+    --bg-surface: #FFFFFF;
+    --bg-surface-alt: #F4F4FF;
+    
+    /* Accents */
+    --border-color: #E5E5E5;
+    --border-focus: #5E5CE6;
+    --input-label-color: #545470;
+    --danger-red: #FF4D4F;
+    
+    /* Attendance Colors */
+    --attendance-green: #22C55E;
+    --attendance-orange: #F59E0B;
+    --attendance-red: #EF4444;
+    --attendance-mixed: #FFE082;
+    --dashboard-green: #00A355;
+    
+    /* Analysis / Premium Design Colors */
+    --analysis-attended-bg: #E8F5E9;
+    --analysis-conducted-bg: #F3E5F5;
+    --analysis-insight-bg: #635BFF;
+    --analysis-donut-track: #E5E7EB;
+    --analysis-calc-accent: #059669;
+    
+    /* Typography */
+    --font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    
+    /* Shadows */
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+    
+    /* Borders */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+    --radius-full: 9999px;
+}
