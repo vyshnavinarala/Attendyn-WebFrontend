@@ -39,81 +39,10 @@
             box-sizing: border-box;
         }
 
-        /* Sidebar Styling */
-        .sidebar { 
-            border: none; 
-            background: white; 
-            border-radius: 28px;
-            height: calc(100vh - 48px);
-            position: sticky;
-            top: 24px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
-            display: flex;
-            flex-direction: column;
-            padding: 2rem 1.5rem;
-            z-index: 100;
-            width: 250px;
-        }
-
-        .logo-section {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 3rem;
-            padding-left: 0.75rem;
-        }
-
-        .logo-icon {
-            width: 40px; height: 40px;
-            display: flex; align-items: center; justify-content: center;
-            overflow: hidden;
-            background: transparent;
-            border-radius: 14px;
-        }
-
-        .logo-icon img {
-            width: 100%; height: 100%; object-fit: cover;
-        }
-
-        .logo-text { font-size: 1.25rem; font-weight: 800; color: #1A1C3E; }
-
-        .nav-group { margin-bottom: 2rem; }
-        .nav-group-title { font-size: 0.75rem; font-weight: 700; color: #A0AABF; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem; padding-left: 0.75rem; }
-
-        .nav-item {
-            display: flex; align-items: center; gap: 12px;
-            padding: 0.875rem 1rem; border-radius: 12px;
-            color: #545470; font-weight: 600; cursor: pointer;
-            transition: all 0.2s; margin-bottom: 4px; text-decoration: none;
-        }
-        .nav-item:hover { background: #FAFAFB; color: #1A1C3E; }
-        .nav-item.active { 
-            background: #5B6CFF; 
-            color: white; 
-            box-shadow: 0 8px 20px rgba(91, 108, 255, 0.25);
-        }
-        .nav-item.logout { color: #FF4D4F; margin-top: auto; }
-        .nav-item.logout:hover { background: #FFF5F5; color: #FF2D2D; }
-        .nav-item svg { width: 22px; height: 22px; }
-
-        .add-attendance-sidebar-icon {
-            width: 24px; height: 24px;
-            background: #5B6CFF;
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            color: white; margin-right: 0;
-            transition: all 0.2s;
-        }
-
-        .nav-item.active .add-attendance-sidebar-icon {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-        }
-
         /* Content Styling */
         .main-content {
             flex: 1;
-            background: white;
+            background: #F5F3FF; /* Light Lavender Background */
             border-radius: 28px;
             height: calc(100vh - 48px);
             overflow-y: auto;
@@ -213,6 +142,7 @@
             color: #A0AABF;
             letter-spacing: 1px;
             margin-bottom: 0.75rem;
+            gap: 10px;
         }
 
         .calendar-grid {
@@ -226,7 +156,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 50%; /* Fully circular */
+            border-radius: 12px; /* Good looking squircle/rounded square shape */
             font-weight: 700;
             font-size: 0.9rem;
             color: #1A1C3E;
@@ -251,8 +181,8 @@
         }
 
         .calendar-day.partial {
-            background: #FFE082;
-            color: #1A1C2E;
+            background: #FBC02D; /* Dark Yellow */
+            color: #1A1C3E; 
         }
 
         .calendar-legend {
@@ -271,10 +201,10 @@
             font-weight: 800;
             color: #545470;
         }
-        .dot { width: 12px; height: 12px; border-radius: 50%; }
+        .dot { width: 12px; height: 12px; border-radius: 4px; }
         .dot.present { background: #4CAF50; }
         .dot.absent { background: #F44336; }
-        .dot.partial { background: #FFE082; }
+        .dot.partial { background: #FBC02D; }
 
         .screen-title { font-size: 2rem; font-weight: 800; margin: 0; color: #1A1C3E; }
 
@@ -389,7 +319,7 @@
                 </div>
                 <h2 style="font-size: 1.5rem; font-weight: 800; color: #1A1C3E; margin-bottom: 0.75rem;">No Attendance Data Available</h2>
                 <p style="color: #545470; font-weight: 600; margin-bottom: 2rem;">Add subjects to start tracking attendance</p>
-
+                <a href="javascript:void(0)" onclick="navigateTo('add-subject.html')" class="add-subject-empty-btn" style="background: var(--brand-purple); color: white; padding: 1rem 2rem; border-radius: 100px; font-weight: 700; display: inline-block; box-shadow: 0 8px 20px rgba(123, 97, 255, 0.3); text-decoration: none;">+ Add Subject</a>
             </div>
 
             <div class="calendar-card" id="calendarCard">
@@ -442,12 +372,60 @@
         </nav>
     </div>
 
+    <script src="../js/app.js"></script>
     <script>
         let currentDate = new Date();
         let subjects = JSON.parse(localStorage.getItem('SUBJECTS_DATA') || '[]');
         let selectedSubjectId = null;
 
-        function init() {
+        async function init() {
+            // Initial render from local cache for speed
+            updateUIState();
+
+            // Fetch latest data from API
+            await fetchSubjects();
+            
+            document.getElementById('prev-month').onclick = () => {
+                currentDate.setDate(1); // Set to 1st to avoid overflow mid-month
+                currentDate.setMonth(currentDate.getMonth() - 1);
+                renderCalendar();
+            };
+            
+            document.getElementById('next-month').onclick = () => {
+                currentDate.setDate(1); // Set to 1st to avoid overflow mid-month
+                currentDate.setMonth(currentDate.getMonth() + 1);
+                renderCalendar();
+            };
+            
+            document.getElementById('subject-selector').onchange = (e) => {
+                selectedSubjectId = e.target.value;
+                renderCalendar();
+            };
+        }
+
+        async function fetchSubjects() {
+            const token = localStorage.getItem('AUTH_TOKEN');
+            if (!token) return;
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/subjects`, {
+                    method: 'GET',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    subjects = data;
+                    localStorage.setItem('SUBJECTS_DATA', JSON.stringify(subjects));
+                    updateUIState();
+                }
+            } catch (error) {
+                console.error('Fetch subjects error:', error);
+            }
+        }
+
+        function updateUIState() {
             if (subjects.length === 0) {
                 document.getElementById('subjectSelectWrapper').style.display = 'none';
                 document.getElementById('calendarCard').style.display = 'none';
@@ -463,25 +441,13 @@
 
             populateSubjectSelector();
             renderCalendar();
-            
-            document.getElementById('prev-month').onclick = () => {
-                currentDate.setMonth(currentDate.getMonth() - 1);
-                renderCalendar();
-            };
-            
-            document.getElementById('next-month').onclick = () => {
-                currentDate.setMonth(currentDate.getMonth() + 1);
-                renderCalendar();
-            };
-            
-            document.getElementById('subject-selector').onchange = (e) => {
-                selectedSubjectId = e.target.value;
-                renderCalendar();
-            };
         }
 
         function populateSubjectSelector() {
             const selector = document.getElementById('subject-selector');
+            const currentVal = selector.value;
+            selector.innerHTML = ''; // Clear to prevent duplicates on refresh
+            
             subjects.forEach(subject => {
                 const option = document.createElement('option');
                 option.value = subject.id;
@@ -489,7 +455,10 @@
                 selector.appendChild(option);
             });
             
-            if (subjects.length > 0) {
+            if (currentVal && subjects.find(s => String(s.id) === String(currentVal))) {
+                selector.value = currentVal;
+                selectedSubjectId = currentVal;
+            } else if (subjects.length > 0) {
                 selectedSubjectId = subjects[0].id;
                 selector.value = selectedSubjectId;
             }

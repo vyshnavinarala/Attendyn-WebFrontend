@@ -39,83 +39,12 @@
             box-sizing: border-box;
         }
 
-        /* Sidebar Styling */
-        .sidebar { 
-            border: none; 
-            background: white; 
-            border-radius: 28px;
-            height: calc(100vh - 48px);
-            position: sticky;
-            top: 24px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
-            display: flex;
-            flex-direction: column;
-            padding: 2rem 1.5rem;
-            z-index: 100;
-            width: 250px;
-        }
-
-        .logo-section {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 3rem;
-            padding-left: 0.75rem;
-        }
-
-        .logo-icon {
-            width: 40px; height: 40px;
-            display: flex; align-items: center; justify-content: center;
-            overflow: hidden;
-            background: transparent;
-            border-radius: 14px;
-        }
-
-        .logo-icon img {
-            width: 100%; height: 100%; object-fit: cover;
-        }
-
-        .logo-text { font-size: 1.25rem; font-weight: 800; color: #1A1C3E; }
-
-        .nav-group { margin-bottom: 2rem; }
-        .nav-group-title { font-size: 0.75rem; font-weight: 700; color: #A0AABF; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem; padding-left: 0.75rem; }
-
-        .nav-item {
-            display: flex; align-items: center; gap: 12px;
-            padding: 0.875rem 1rem; border-radius: 12px;
-            color: #545470; font-weight: 600; cursor: pointer;
-            transition: all 0.2s; margin-bottom: 4px; text-decoration: none;
-        }
-        .nav-item:hover { background: #FAFAFB; color: #1A1C3E; }
-        .nav-item.active { 
-            background: #5B6CFF; 
-            color: white; 
-            box-shadow: 0 8px 20px rgba(91, 108, 255, 0.25);
-        }
-        .nav-item svg { width: 22px; height: 22px; }
-        
-        .nav-item.logout { color: #FF4D4F; margin-top: auto; }
-        .nav-item.logout:hover { background: #FFF5F5; color: #FF2D2D; }
-        .nav-item svg { width: 22px; height: 22px; }
-        
-        .add-attendance-sidebar-icon {
-            width: 24px; height: 24px;
-            background: #5B6CFF;
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            color: white; margin-right: 0;
-            transition: all 0.2s;
-        }
-
-        .nav-item.active .add-attendance-sidebar-icon {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-        }
+        /* Main Content */
 
         /* Main Content */
         .main-content {
             flex: 1;
-            background: white;
+            background: #F5F3FF; /* Light Lavender Background */
             border-radius: 28px;
             height: calc(100vh - 48px);
             overflow-y: auto;
@@ -137,9 +66,9 @@
 
         .page-card {
             background: white; 
-            border-radius: 28px; 
-            padding: 2rem; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.03); 
+            border-radius: 32px; /* Increased for a more modern, squircle feel */
+            padding: 2.25rem; 
+            box-shadow: 0 15px 35px rgba(0,0,0,0.035); /* Softer, premium shadow */
             border: 1px solid #F1F3F9; 
             margin-bottom: 2rem;
         }
@@ -156,13 +85,14 @@
 
         .picker-wrapper {
             position: relative; 
-            background: #F8F9FF; 
-            border-radius: 14px; 
-            height: 60px; 
+            background: #FFFFFF; /* Pure white for better contrast */
+            border-radius: 20px; /* Matched to main branding */
+            height: 64px; 
             display: flex; 
             align-items: center; 
-            padding: 0 1.25rem; 
+            padding: 0 1.5rem; 
             border: 1px solid #E5E7EB;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.01);
         }
 
         .subject-select {
@@ -185,15 +115,16 @@
         }
 
         .attendance-btn {
-            height: 120px;
-            border-radius: 24px; 
+            height: 130px;
+            border-radius: 28px; /* Matched card branding */
             display: flex; 
             flex-direction: column; 
             align-items: center; 
             justify-content: center; 
             cursor: pointer; 
-            transition: all 0.3s ease; 
-            background: #F9FAFB;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+            background: #FFFFFF;
+            border: 1px solid #F1F3F9;
         }
 
         .attendance-btn:hover:not(.active) {

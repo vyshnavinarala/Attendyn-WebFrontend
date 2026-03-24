@@ -23,7 +23,7 @@
         }
 
         body {
-            background-color: #F0F2FF;
+            background-color: #F5F3FF; /* Light Lavender Background */
             margin: 0;
             font-family: 'Plus Jakarta Sans', sans-serif;
             color: var(--text-heading);
@@ -35,86 +35,16 @@
             padding: 24px;
             gap: 24px;
             min-height: 100vh;
-            background-color: #F0F2FF;
+            background-color: #F5F3FF; /* Light Lavender Background */
             box-sizing: border-box;
         }
 
-        /* Sidebar Styling (Standardized) */
-        .sidebar { 
-            border: none; 
-            background: white; 
-            border-radius: 28px;
-            height: calc(100vh - 48px);
-            position: sticky;
-            top: 24px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
-            display: flex;
-            flex-direction: column;
-            padding: 2rem 1.5rem;
-            z-index: 100;
-            width: 250px;
-            box-sizing: border-box;
-        }
-
-        .logo-section {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 3rem;
-            padding-left: 0.75rem;
-        }
-
-        .logo-icon {
-            width: 40px; height: 40px;
-            display: flex; align-items: center; justify-content: center;
-            overflow: hidden;
-            border-radius: 12px;
-        }
-
-        .logo-icon img {
-            width: 100%; height: 100%; object-fit: cover;
-        }
-
-        .logo-text { font-size: 1.25rem; font-weight: 800; color: #1A1C3E; }
-
-        .nav-group { margin-bottom: 2rem; }
-        .nav-group-title { font-size: 0.75rem; font-weight: 700; color: #A0AABF; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem; padding-left: 0.75rem; }
-
-        .nav-item {
-            display: flex; align-items: center; gap: 12px;
-            padding: 0.875rem 1rem; border-radius: 12px;
-            color: #545470; font-weight: 600; cursor: pointer;
-            transition: all 0.2s; margin-bottom: 4px; text-decoration: none;
-        }
-        .nav-item:hover { background: #FAFAFB; color: #1A1C3E; }
-        .nav-item.active { 
-            background: #5B6CFF; 
-            color: white; 
-            box-shadow: 0 8px 20px rgba(91, 108, 255, 0.25);
-        }
-        .nav-item.logout { color: #FF4D4F; }
-        .nav-item.logout:hover { background: #FFF5F5; color: #FF2D2D; }
-        .nav-item svg { width: 22px; height: 22px; }
-
-        .add-attendance-sidebar-icon {
-            width: 24px; height: 24px;
-            background: #5B6CFF;
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            color: white; margin-right: 0;
-            transition: all 0.2s;
-        }
-
-        .nav-item.active .add-attendance-sidebar-icon {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-        }
+        /* Main Content */
 
         /* Main Content */
         .main-content {
             flex: 1;
-            background: white;
-            border-radius: 28px;
+            background: #F5F3FF; /* Light Lavender Background */
             height: calc(100vh - 48px);
             overflow-y: auto;
             overflow-x: hidden;

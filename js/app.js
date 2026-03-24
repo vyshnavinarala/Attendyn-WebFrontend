@@ -2,7 +2,7 @@
  * app.js - Core UI and Interaction Logic
  */
 
-const API_BASE_URL = 'http://localhost:5000'; // Update with your actual backend URL
+const API_BASE_URL = 'http://localhost:5000'; // Default to localhost for web development
 
 
 document.addEventListener('DOMContentLoaded', () => {

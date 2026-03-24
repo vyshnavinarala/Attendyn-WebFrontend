@@ -23,7 +23,7 @@
         }
 
         body {
-            background-color: #F0F2FF;
+            background-color: #F5F3FF; /* Light Lavender Background */
             margin: 0;
             font-family: 'Plus Jakarta Sans', sans-serif;
             color: var(--text-heading);
@@ -35,86 +35,16 @@
             padding: 24px;
             gap: 24px;
             min-height: 100vh;
-            background-color: #F0F2FF;
+            background-color: #F5F3FF; /* Light Lavender Background */
             box-sizing: border-box;
         }
 
-        /* Sidebar Styling (Standardized) */
-        .sidebar { 
-            border: none; 
-            background: white; 
-            border-radius: 28px;
-            height: calc(100vh - 48px);
-            position: sticky;
-            top: 24px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
-            display: flex;
-            flex-direction: column;
-            padding: 2rem 1.5rem;
-            z-index: 100;
-            width: 250px;
-            box-sizing: border-box;
-        }
-
-        .logo-section {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 3rem;
-            padding-left: 0.75rem;
-        }
-
-        .logo-icon {
-            width: 40px; height: 40px;
-            display: flex; align-items: center; justify-content: center;
-            overflow: hidden;
-            border-radius: 12px;
-        }
-
-        .logo-icon img {
-            width: 100%; height: 100%; object-fit: cover;
-        }
-
-        .logo-text { font-size: 1.25rem; font-weight: 800; color: #1A1C3E; }
-
-        .nav-group { margin-bottom: 2rem; }
-        .nav-group-title { font-size: 0.75rem; font-weight: 700; color: #A0AABF; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem; padding-left: 0.75rem; }
-
-        .nav-item {
-            display: flex; align-items: center; gap: 12px;
-            padding: 0.875rem 1rem; border-radius: 12px;
-            color: #545470; font-weight: 600; cursor: pointer;
-            transition: all 0.2s; margin-bottom: 4px; text-decoration: none;
-        }
-        .nav-item:hover { background: #FAFAFB; color: #1A1C3E; }
-        .nav-item.active { 
-            background: #5B6CFF; 
-            color: white; 
-            box-shadow: 0 8px 20px rgba(91, 108, 255, 0.25);
-        }
-        .nav-item.logout { color: #FF4D4F; }
-        .nav-item.logout:hover { background: #FFF5F5; color: #FF2D2D; }
-        .nav-item svg { width: 22px; height: 22px; }
-
-        .add-attendance-sidebar-icon {
-            width: 24px; height: 24px;
-            background: #5B6CFF;
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            color: white; margin-right: 0;
-            transition: all 0.2s;
-        }
-
-        .nav-item.active .add-attendance-sidebar-icon {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-        }
+        /* Main Content */
 
         /* Main Content */
         .main-content {
             flex: 1;
-            background: white;
-            border-radius: 28px;
+            background: #F5F3FF; /* Light Lavender Background */
             height: calc(100vh - 48px);
             overflow-y: auto;
             overflow-x: hidden;
@@ -369,20 +299,22 @@
                         <img src="../assets/logo.png" alt="Attendyn Logo">
                     </div>
                     <h2 class="app-name">Attendyn</h2>
-                    <p class="app-tagline">Track Your Success, Period by Period.</p>
+                    <p class="app-tagline">Your Attendance, Always in Sight</p>
                     <div class="version-badge">Version 1.0.0 (Web)</div>
                 </div>
 
                 <div class="details-section">
+                    <span class="section-label">About</span>
+                    <p class="policy-text" style="background: white; padding: 1.5rem; border-radius: 20px; border: 1px solid #F1F3F9; box-shadow: 0 4px 15px rgba(0,0,0,0.02); margin-bottom: 2rem;">Attendyn is a modern attendance tracking application designed for students. Keep track of your attendance across all subjects, get smart insights, and maintain your academic goals with ease.</p>
+
                     <span class="section-label">Key Features</span>
                     
                     <div class="detail-card">
                         <div class="detail-icon">
-                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
                         </div>
                         <div class="detail-info">
-                            <span class="detail-title">Smart Attendance Prediction</span>
-                            <span class="detail-desc">Predict exactly how many classes you can skip based on your goal.</span>
+                            <span class="detail-title">Track attendance for multiple subjects</span>
                         </div>
                     </div>
 
@@ -391,18 +323,25 @@
                             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
                         </div>
                         <div class="detail-info">
-                            <span class="detail-title">Detailed Analytics</span>
-                            <span class="detail-desc">Visualize your attendance progress with beautiful charts.</span>
+                            <span class="detail-title">Visual calendar view of history</span>
                         </div>
                     </div>
 
                     <div class="detail-card">
                         <div class="detail-icon">
-                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="6" y1="20" x2="6" y2="14"></line></svg>
                         </div>
                         <div class="detail-info">
-                            <span class="detail-title">Privacy Focused</span>
-                            <span class="detail-desc">Your data stays safe and secure on your device.</span>
+                            <span class="detail-title">Smart analytics and predictions</span>
+                        </div>
+                    </div>
+
+                    <div class="detail-card">
+                        <div class="detail-icon">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle></svg>
+                        </div>
+                        <div class="detail-info">
+                            <span class="detail-title">Personalized attendance goals</span>
                         </div>
                     </div>
                 </div>

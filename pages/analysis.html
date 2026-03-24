@@ -11,7 +11,7 @@
     <style>
         :root {
             --sidebar-width: 250px;
-            --bg-light: #F8F9FF;
+            --bg-light: #F5F3FF; /* Light Lavender Background */
             --sidebar-bg: #FFFFFF;
             --active-item-bg: #F5F3FF;
             --active-item-text: #5E5CE6;
@@ -46,71 +46,6 @@
             box-sizing: border-box;
         }
 
-        /* Sidebar Styling */
-        .sidebar { 
-            border: none; 
-            background: white; 
-            border-radius: 28px;
-            height: calc(100vh - 48px);
-            position: sticky;
-            top: 24px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
-            display: flex;
-            flex-direction: column;
-            padding: 2rem 1.5rem;
-            z-index: 100;
-            width: 250px;
-        }
-
-        .logo-section {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 3rem;
-            padding-left: 0.75rem;
-        }
-
-        .logo-icon {
-            width: 40px; height: 40px;
-            display: flex; align-items: center; justify-content: center;
-            overflow: hidden;
-            background: transparent;
-            border-radius: 14px;
-        }
-
-        .logo-icon img { width: 100%; height: 100%; object-fit: cover; }
-        .logo-text { font-size: 1.25rem; font-weight: 800; color: #1A1C3E; }
-
-        .nav-group { margin-bottom: 2rem; }
-        .nav-group-title { font-size: 0.75rem; font-weight: 700; color: #A0AABF; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem; padding-left: 0.75rem; }
-
-        .nav-item {
-            display: flex; align-items: center; gap: 12px;
-            padding: 0.875rem 1rem; border-radius: 12px;
-            color: #545470; font-weight: 600; cursor: pointer;
-            transition: all 0.2s; margin-bottom: 4px; text-decoration: none;
-        }
-        .nav-item:hover { background: #FAFAFB; color: #1A1C3E; }
-        .nav-item.active { 
-            background: #5B6CFF; 
-            color: white; 
-            box-shadow: 0 8px 20px rgba(91, 108, 255, 0.25);
-        }
-        .nav-item.logout { color: #FF4D4F; margin-top: auto; }
-        .nav-item.logout:hover { background: #FFF5F5; color: #FF2D2D; }
-        .nav-item svg { width: 22px; height: 22px; }
-
-        .add-attendance-sidebar-icon {
-            width: 24px; height: 24px;
-            background: #5B6CFF;
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            color: white;
-            transition: all 0.2s;
-        }
-
-        .nav-item.active .add-attendance-sidebar-icon { background: rgba(255, 255, 255, 0.2); }
-
         /* Main Content Styling */
         .main-content {
             flex: 1;
@@ -129,11 +64,11 @@
         /* Cards Styling */
         .card {
             background: white;
-            border-radius: 20px;
-            padding: 24px;
-            margin-bottom: 16px;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.04);
-            border: 1px solid rgba(0,0,0,0.02);
+            border-radius: 32px; /* Premium squircle shape */
+            padding: 2rem;
+            margin-bottom: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.035); /* Softer, deep shadow */
+            border: 1px solid #F1F3F9;
         }
 
         /* Subject Selection Card */
@@ -153,20 +88,44 @@
 
         .subject-spinner {
             width: 100%;
-            padding: 12px 16px;
-            border-radius: 12px;
+            padding: 14px 18px;
+            border-radius: 16px;
             border: 1.5px solid #F1F3F9;
-            background-color: #F8FAFC;
+            background-color: #FFFFFF;
             font-family: inherit;
-            font-weight: 600;
+            font-weight: 700;
             color: #1A1C3E;
             cursor: pointer;
             outline: none;
-            transition: border-color 0.2s;
+            transition: all 0.2s;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.01);
         }
 
         .subject-spinner:focus {
             border-color: var(--brand-blue);
+            box-shadow: 0 0 0 4px rgba(91, 108, 255, 0.1);
+        }
+
+        /* Side-by-Side Layout for Stats and Insight */
+        .analysis-main-grid {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 20px;
+            align-items: stretch;
+        }
+
+        .analysis-main-grid > .card {
+            flex: 1;
+            margin-bottom: 0; /* Handled by grid gap */
+            display: flex;
+            flex-direction: column;
+        }
+
+        @media (max-width: 1024px) {
+            .analysis-main-grid {
+                flex-direction: column;
+                gap: 20px;
+            }
         }
 
         /* Stats Card */
@@ -186,12 +145,13 @@
         .goal-label { font-size: 0.9rem; color: var(--text-muted); margin-top: 12px; }
 
         .donut-container {
-            width: 120px;
-            height: 120px;
+            width: 140px; /* Increased for better clearance */
+            height: 140px;
             position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
+            flex-shrink: 0;
         }
 
         .donut-ring {
@@ -213,14 +173,15 @@
 
         .donut-percent { font-size: 1.25rem; font-weight: 700; color: #1A1C3E; }
         .status-badge {
-            font-size: 0.65rem;
+            font-size: 0.7rem;
             font-weight: 800;
             color: white;
             background: var(--att-red);
-            padding: 2px 8px;
-            border-radius: 4px;
-            margin-top: 4px;
+            padding: 4px 12px;
+            border-radius: 50px; /* Pill Shape */
+            margin-top: 6px;
             text-transform: uppercase;
+            white-space: nowrap;
         }
 
         /* Insight Card */
@@ -480,33 +441,36 @@
                     </select>
                 </div>
 
-                <!-- Main Stats -->
-                <div class="card">
-                    <div class="stats-card-content">
-                        <div class="stats-left">
-                            <span class="att-label">Attendance</span>
-                            <span id="tv-percentage" class="att-percentage">0.0%</span>
-                            <span id="tv-goal-percentage" class="goal-label">Goal: 75%</span>
-                        </div>
-                        <div class="donut-container">
-                            <div id="donut-ring" class="donut-ring" style="--percent: 0%;"></div>
-                            <div class="donut-text-container">
-                                <span id="tv-donut-percentage" class="donut-percent">0%</span>
-                                <div id="status-badge" class="status-badge">Safe</div>
+                <!-- Main Stats & AI Insight Row -->
+                <div class="analysis-main-grid">
+                    <!-- Main Stats -->
+                    <div class="card">
+                        <div class="stats-card-content">
+                            <div class="stats-left">
+                                <span class="att-label">Attendance</span>
+                                <span id="tv-percentage" class="att-percentage">0.0%</span>
+                                <span id="tv-goal-percentage" class="goal-label">Goal: 75%</span>
+                            </div>
+                            <div class="donut-container">
+                                <div id="donut-ring" class="donut-ring" style="--percent: 0%;"></div>
+                                <div class="donut-text-container">
+                                    <span id="tv-donut-percentage" class="donut-percent">0%</span>
+                                    <div id="status-badge" class="status-badge">Safe</div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- AI Insight -->
-                <div id="insight-card" class="card insight-card">
-                    <div class="card-header">
-                        <div class="header-icon-circle">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 1 0 6 8c0 1.3.5 2.6 1.5 3.5.8.8 1.3 1.5 1.5 2.5"></path><line x1="9" y1="18" x2="15" y2="18"></line><line x1="10" y1="22" x2="14" y2="22"></line></svg>
+                    <!-- AI Insight -->
+                    <div id="insight-card" class="card insight-card">
+                        <div class="card-header">
+                            <div class="header-icon-circle">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 1 0 6 8c0 1.3.5 2.6 1.5 3.5.8.8 1.3 1.5 1.5 2.5"></path><line x1="9" y1="18" x2="15" y2="18"></line><line x1="10" y1="22" x2="14" y2="22"></line></svg>
+                            </div>
+                            <span class="header-title">AI Insight</span>
                         </div>
-                        <span class="header-title">AI Insight</span>
+                        <p id="tv-ai-insight-text" class="insight-text">Analyzing your attendance data...</p>
                     </div>
-                    <p id="tv-ai-insight-text" class="insight-text">Analyzing your attendance data...</p>
                 </div>
 
                 <!-- Predictions -->

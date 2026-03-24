@@ -23,7 +23,7 @@
         }
 
         body {
-            background-color: #F0F2FF;
+            background-color: #F5F3FF; /* Light Lavender Background */
             margin: 0;
             font-family: 'Plus Jakarta Sans', sans-serif;
             color: var(--text-heading);
@@ -35,86 +35,16 @@
             padding: 24px;
             gap: 24px;
             min-height: 100vh;
-            background-color: #F0F2FF;
+            background-color: #F5F3FF; /* Light Lavender Background */
             box-sizing: border-box;
         }
 
-        /* Sidebar Styling (Standardized) */
-        .sidebar { 
-            border: none; 
-            background: white; 
-            border-radius: 28px;
-            height: calc(100vh - 48px);
-            position: sticky;
-            top: 24px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
-            display: flex;
-            flex-direction: column;
-            padding: 2rem 1.5rem;
-            z-index: 100;
-            width: 250px;
-            box-sizing: border-box;
-        }
-
-        .logo-section {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 3rem;
-            padding-left: 0.75rem;
-        }
-
-        .logo-icon {
-            width: 40px; height: 40px;
-            display: flex; align-items: center; justify-content: center;
-            overflow: hidden;
-            border-radius: 12px;
-        }
-
-        .logo-icon img {
-            width: 100%; height: 100%; object-fit: cover;
-        }
-
-        .logo-text { font-size: 1.25rem; font-weight: 800; color: #1A1C3E; }
-
-        .nav-group { margin-bottom: 2rem; }
-        .nav-group-title { font-size: 0.75rem; font-weight: 700; color: #A0AABF; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem; padding-left: 0.75rem; }
-
-        .nav-item {
-            display: flex; align-items: center; gap: 12px;
-            padding: 0.875rem 1rem; border-radius: 12px;
-            color: #545470; font-weight: 600; cursor: pointer;
-            transition: all 0.2s; margin-bottom: 4px; text-decoration: none;
-        }
-        .nav-item:hover { background: #FAFAFB; color: #1A1C3E; }
-        .nav-item.active { 
-            background: #5B6CFF; 
-            color: white; 
-            box-shadow: 0 8px 20px rgba(91, 108, 255, 0.25);
-        }
-        .nav-item.logout { color: #FF4D4F; margin-top: auto; }
-        .nav-item.logout:hover { background: #FFF5F5; color: #FF2D2D; }
-        .nav-item svg { width: 22px; height: 22px; }
-
-        .add-attendance-sidebar-icon {
-            width: 24px; height: 24px;
-            background: #5B6CFF;
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            color: white; margin-right: 0;
-            transition: all 0.2s;
-        }
-
-        .nav-item.active .add-attendance-sidebar-icon {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-        }
+        /* Main Content */
 
         /* Main Content */
         .main-content {
             flex: 1;
-            background: white;
-            border-radius: 28px;
+            background: #F5F3FF; /* Light Lavender Background */
             height: calc(100vh - 48px);
             overflow-y: auto;
             overflow-x: hidden;
@@ -286,10 +216,9 @@
                         <div class="policy-badge">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
                         </div>
-                        <span class="policy-title">Data Protection</span>
+                        <span class="policy-title">Information We Collect</span>
                     </div>
-                    <p class="policy-text">At Attendyn, we value your privacy above all else. Your data is stored locally on your device whenever possible, and we only collect minimal information necessary for the application's core functionality.</p>
-                    <p class="policy-text">We implement industry-standard security measures to protect your attendance records and profile information from unauthorized access, loss, or disclosure.</p>
+                    <p class="policy-text">Attendyn collects and stores attendance data, subject information, and user preferences securely on our servers. We value your privacy and do not share your personal information with third parties.</p>
                 </div>
 
                 <div class="policy-card">
@@ -297,10 +226,29 @@
                         <div class="policy-badge">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
                         </div>
-                        <span class="policy-title">Usage Tracking</span>
+                        <span class="policy-title">Data Usage</span>
                     </div>
-                    <p class="policy-text">Attendyn tracks your attendance data solely for the purpose of providing you with insights, statistics, and calculations as per your academic requirements. This information remains private to you.</p>
-                    <p class="policy-text">We do not share your individual attendance data or personal habits with any third-party advertising companies or data brokers.</p>
+                    <p class="policy-text">Your attendance data is used solely to provide you with attendance tracking, analytics, and predictions to help you stay on track with your academic goals.</p>
+                </div>
+
+                <div class="policy-card">
+                    <div class="policy-header">
+                        <div class="policy-badge">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                        </div>
+                        <span class="policy-title">Data Storage</span>
+                    </div>
+                    <p class="policy-text">Your data is stored securely in our cloud database to ensure synchronization across your devices. We maintain modern server infrastructure to protect your personal attendance information.</p>
+                </div>
+
+                <div class="policy-card">
+                    <div class="policy-header">
+                        <div class="policy-badge">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                        </div>
+                        <span class="policy-title">Data Security</span>
+                    </div>
+                    <p class="policy-text">We implement industry-standard security measures to protect your data from unauthorized access. Your privacy and data integrity are our top priority.</p>
                 </div>
 
                 <div class="policy-card">
@@ -308,12 +256,12 @@
                         <div class="policy-badge">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                         </div>
-                        <span class="policy-title">Your Rights</span>
+                        <span class="policy-title">Changes to Privacy Policy</span>
                     </div>
-                    <p class="policy-text">Users have the right to access, export, or delete their attendance records at any time. When you delete your account, all associated data is permanently erased from our primary storage systems.</p>
+                    <p class="policy-text">We may update this privacy policy from time to time. We will notify you of any changes by posting the new privacy policy in the app.</p>
                 </div>
 
-                <p class="last-updated">Last Updated: March 20, 2026</p>
+                <p class="last-updated">Last Updated: March 24, 2026</p>
             </div>
         </main>
     </div>
